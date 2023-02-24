@@ -21,8 +21,6 @@ func main() {
 
 	router.Use(model.JwtAuthentication) //attach JWT auth middleware
 
-	//router.NotFoundHandler = app.NotFoundHandler
-
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8000" //localhost
