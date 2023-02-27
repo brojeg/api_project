@@ -1,7 +1,5 @@
 package utils
 
-import "strconv"
-
 func IsLuhnValid(value []int64) bool {
 
 	sum := computeCheckSum(value)
@@ -29,15 +27,15 @@ func reverseInt(s []int64) {
 	}
 }
 
-func StringToIntSlice(n string) []int64 {
+func StringToIntSlice(n int64) []int64 {
 	var ret []int64
-	i, err := strconv.ParseInt(n, 10, 64)
-	if err != nil {
-		panic(err)
-	}
-	for i != 0 {
-		ret = append(ret, i%10)
-		i /= 10
+	// i, err := strconv.ParseInt(n, 10, 64)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	for n != 0 {
+		ret = append(ret, n%10)
+		n /= 10
 	}
 
 	reverseInt(ret)
