@@ -60,7 +60,7 @@ func (account *Account) Create() (u.Response, string) {
 	GetDB().Create(account)
 
 	if account.ID <= 0 {
-		return u.Message(false, "Failed to create account, connection error.", 500), ""
+		return u.Message(false, "Failed to create account, connection error.", 404), ""
 	}
 
 	//Create new JWT token for the newly registered account
