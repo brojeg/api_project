@@ -39,7 +39,7 @@ func (account *Account) Validate() u.Response {
 	//check for errors and duplicate emails
 	err := GetDB().Table("accounts").Where("login = ?", account.Login).First(temp).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return u.Message(false, "Connection error. Please retry", 500)
+		return u.Message(false, "Connection error. Please retry", 502)
 	}
 	if temp.Login != "" {
 		return u.Message(false, "Email address already in use by another user.", 409)
@@ -60,7 +60,7 @@ func (account *Account) Create() (u.Response, string) {
 	GetDB().Create(account)
 
 	if account.ID <= 0 {
-		return u.Message(false, "Failed to create account, connection error.", 404), ""
+		return u.Message(false, "Failed to create account, connection error.", 501), ""
 	}
 
 	//Create new JWT token for the newly registered account
