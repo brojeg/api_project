@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -15,7 +17,7 @@ func GetDB() *gorm.DB {
 
 	conn, err := gorm.Open("postgres", connectionString)
 	if err != nil {
-		logger.Error(connectionString)
+		fmt.Println(connectionString)
 		logger.Errorf("Error is %e \n Connection string is %s", err, connectionString)
 	}
 
