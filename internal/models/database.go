@@ -7,9 +7,7 @@ import (
 
 var db *gorm.DB
 
-func DatabaseInit(connectionString string) {
-
-	// connectionString = "host=localhost user=test_user dbname=test sslmode=disable password=111"
+func InitDb(connectionString string) {
 	conn, err := gorm.Open("postgres", connectionString)
 	if err != nil {
 		logger.Errorf("Error is %e \n Connection string is %s", err, connectionString)
@@ -18,7 +16,7 @@ func DatabaseInit(connectionString string) {
 	db = conn
 	db.Debug().AutoMigrate(&Account{}, &Order{}, &Balance{}, &BalanceHistory{})
 }
-
 func GetDB() *gorm.DB {
+
 	return db
 }
