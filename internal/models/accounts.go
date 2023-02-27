@@ -3,7 +3,6 @@ package models
 import (
 	u "diploma/go-musthave-diploma-tpl/internal/utils"
 	"os"
-	"strings"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -15,7 +14,7 @@ import (
 JWT claims struct
 */
 type Token struct {
-	UserId uint
+	UserID uint
 	jwt.StandardClaims
 }
 
@@ -29,11 +28,6 @@ type Account struct {
 
 // Validate incoming user details...
 func (account *Account) Validate() u.Response {
-
-	if !strings.Contains(account.Login, "@") {
-
-		return u.Message(false, "Email address is required", 400)
-	}
 
 	if len(account.Password) < 6 {
 		return u.Message(false, "Password is required", 400)
@@ -70,7 +64,7 @@ func (account *Account) Create() u.Response {
 	}
 
 	//Create new JWT token for the newly registered account
-	tk := &Token{UserId: account.ID}
+	tk := &Token{UserID: account.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, err := token.SignedString([]byte(os.Getenv("token_password")))
 	if err != nil {
@@ -104,7 +98,7 @@ func Login(email, password string) u.Response {
 	account.Password = ""
 
 	//Create JWT token
-	tk := &Token{UserId: account.ID}
+	tk := &Token{UserID: account.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	account.Token = tokenString //Store the token in the response

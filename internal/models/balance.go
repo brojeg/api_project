@@ -3,22 +3,27 @@ package models
 import (
 	"context"
 	u "diploma/go-musthave-diploma-tpl/internal/utils"
-	"fmt"
+	log "diploma/go-musthave-diploma-tpl/pkg/logger"
+
+	"go.uber.org/zap"
+
 	"time"
 )
+
+var logger *zap.SugaredLogger = log.InitLogger()
 
 type Balance struct {
 	ID        uint  `gorm:"primarykey" json:"-"`
 	Current   int64 `json:"current"`
 	Withdrawn int64 `json:"withdrawn"`
-	UserId    uint  `json:"-"` //The user that this contact belongs to
+	UserID    uint  `json:"-"`
 }
 
 type BalanceHistory struct {
-	Order        string    `json:"order"`
-	Sum          int64     `json:"sum"`
-	Processed_at time.Time `json:"processed_at"`
-	UserId       uint      `json:"-"`
+	Order       string    `json:"order"`
+	Sum         int64     `json:"sum"`
+	ProcessedAt time.Time `json:"processed_at"`
+	UserID      uint      `json:"-"`
 }
 
 func GetBalance(id uint) *Balance {
@@ -40,7 +45,7 @@ func GetBalanceHistory(user uint) []*BalanceHistory {
 	history := make([]*BalanceHistory, 0)
 	err := GetDB().Table("balance_histories").Where("user_id = ?", user).Order("purchise_at	DESC").Find(&history).Error
 	if err != nil {
-		fmt.Println(err)
+		logger.Error(err)
 		return nil
 	}
 
@@ -48,7 +53,7 @@ func GetBalanceHistory(user uint) []*BalanceHistory {
 }
 
 func (balance *Balance) Add(sum int64, user uint) u.Response {
-	emptyBalance := Balance{UserId: user}
+	emptyBalance := Balance{UserID: user}
 	if balance == nil {
 		balance = &emptyBalance
 		balance.Current = sum + balance.Current
@@ -69,7 +74,7 @@ func (balance *Balance) Withdraw(sum int64) u.Response {
 	if balance == nil {
 		return u.Message(false, "No active balance avalable", 402)
 	}
-	if balance.Current < sum || balance == nil {
+	if balance.Current < sum {
 		return u.Message(false, "Not enough balance points", 402)
 	}
 
@@ -85,7 +90,7 @@ func (balance *Balance) Withdraw(sum int64) u.Response {
 func ApplyAccruals(ctx context.Context, interval string) {
 	inter, err := time.ParseDuration(interval)
 	if err != nil {
-		fmt.Errorf("Cannot parse PollInterval value from config. Error is: \n %e", err)
+		logger.Errorf("Cannot parse PollInterval value from config. Error is: \n %e", err)
 	}
 	ticker := time.NewTicker(inter)
 	for {
@@ -97,8 +102,8 @@ func ApplyAccruals(ctx context.Context, interval string) {
 			for _, order := range ordersToProcess {
 				order.changeOrderStatus("REGISTERED")
 				order.changeOrderStatus("PROCESSING")
-				data := GetBalance(order.UserId)
-				data.Add(order.Accrual, order.UserId)
+				data := GetBalance(order.UserID)
+				data.Add(order.Accrual, order.UserID)
 				order.changeOrderStatus("PROCESSED")
 
 			}

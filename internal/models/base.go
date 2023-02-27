@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -11,9 +9,10 @@ var db *gorm.DB
 
 func DatabaseInit(connectionString string) {
 
+	// connectionString = "host=localhost user=test_user dbname=test sslmode=disable password=111"
 	conn, err := gorm.Open("postgres", connectionString)
 	if err != nil {
-		fmt.Print(err)
+		logger.Error(err)
 	}
 
 	db = conn

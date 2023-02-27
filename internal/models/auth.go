@@ -3,12 +3,34 @@ package models
 import (
 	"context"
 	u "diploma/go-musthave-diploma-tpl/internal/utils"
+	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 )
+
+type contextKey string
+
+func (c contextKey) test() uint {
+	u64, err := strconv.ParseUint(string(c), 10, 32)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return uint(u64)
+}
+
+var (
+	// ContextKeyDeleteCaller var
+	ContextUserKey = contextKey("user")
+)
+
+func GetUserFromContext(ctx context.Context) (uint, bool) {
+	caller, ok := ctx.Value(ContextUserKey).(uint)
+	return caller, ok
+}
 
 var JwtAuthentication = func(next http.Handler) http.Handler {
 
@@ -64,7 +86,8 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), "user", tk.UserId)
+		// ctx := context.WithValue(r.Context(), "user", tk.UserId)
+		ctx := context.WithValue(r.Context(), ContextUserKey, tk.UserID)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})

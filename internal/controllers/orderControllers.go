@@ -11,8 +11,12 @@ import (
 )
 
 var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
-	user := r.Context().Value("user").(uint) //Grab the id of the user that send the request
-	order := &models.Order{Status: "NEW", UserId: user, Uploaded_at: time.Now()}
+	// user := r.Context().Value("user").(uint) //Grab the id of the user that send the request
+	user, ok := models.GetUserFromContext(r.Context())
+	if !ok {
+		u.Respond(w, u.Message(false, "Could not get user from context", 500))
+	}
+	order := &models.Order{Status: "NEW", UserID: user, UploadedAt: time.Now()}
 
 	err := json.NewDecoder(r.Body).Decode(order)
 	if err != nil {
@@ -36,8 +40,12 @@ var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 var GetOrdersFor = func(w http.ResponseWriter, r *http.Request) {
 
 	var resp u.Response
-	id := r.Context().Value("user").(uint)
-	data := models.GetOrders(id)
+	// id := r.Context().Value("user").(uint)
+	user, ok := models.GetUserFromContext(r.Context())
+	if !ok {
+		u.Respond(w, u.Message(false, "Could not get user from context", 500))
+	}
+	data := models.GetOrders(user)
 	resp = u.Message(true, "success", 200)
 	if len(data) == 0 {
 		resp = u.Message(false, "No orders to display", 204)

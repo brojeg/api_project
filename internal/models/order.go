@@ -2,7 +2,6 @@ package models
 
 import (
 	u "diploma/go-musthave-diploma-tpl/internal/utils"
-	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -10,12 +9,12 @@ import (
 
 type Order struct {
 	//gorm.Model
-	ID          uint      `gorm:"primarykey" json:"-"`
-	Number      string    `json:"number"`
-	Status      string    `json:"status"`
-	Accrual     int64     `json:"accrual"`
-	Uploaded_at time.Time `json:"-"`
-	UserId      uint      `json:"-"` //The user that this contact belongs to
+	ID         uint      `gorm:"primarykey" json:"-"`
+	Number     string    `json:"number"`
+	Status     string    `json:"status"`
+	Accrual    int64     `json:"accrual"`
+	UploadedAt time.Time `json:"-"`
+	UserID     uint      `json:"-"` //The user that this contact belongs to
 }
 
 /*
@@ -78,7 +77,7 @@ func GetOrders(user uint) []*Order {
 	orders := make([]*Order, 0)
 	err := GetDB().Table("orders").Where("user_id = ?", user).Find(&orders).Error
 	if err != nil {
-		fmt.Println(err)
+		logger.Error(err)
 		return nil
 	}
 
@@ -90,7 +89,7 @@ func GetOrdersToApplyAccrual(status string) []*Order {
 	orders := make([]*Order, 0)
 	err := GetDB().Table("orders").Where("status = ?", status).Find(&orders).Error
 	if err != nil {
-		fmt.Println(err)
+		logger.Error(err)
 		return nil
 	}
 
