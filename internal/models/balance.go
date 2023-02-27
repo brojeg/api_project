@@ -43,7 +43,7 @@ func (bh *BalanceHistory) Save() {
 func GetBalanceHistory(user uint) []*BalanceHistory {
 
 	history := make([]*BalanceHistory, 0)
-	err := GetDB().Table("balance_histories").Where("user_id = ?", user).Order("purchise_at	DESC").Find(&history).Error
+	err := GetDB().Table("balance_histories").Where("user_id = ?", user).Order("processed_at	DESC").Find(&history).Error
 	if err != nil {
 		logger.Error(err)
 		return nil

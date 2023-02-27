@@ -2,7 +2,6 @@ package config
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"os"
 
@@ -67,6 +66,5 @@ func getParams() ServerConfig {
 
 	flag.Parse()
 
-	fmt.Println(envCfg)
 	return envCfg
 }
