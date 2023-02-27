@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"diploma/go-musthave-diploma-tpl/config"
 	"diploma/go-musthave-diploma-tpl/internal/controllers"
 	"diploma/go-musthave-diploma-tpl/internal/models"
 )
@@ -11,7 +12,7 @@ func main() {
 	// router := mux.NewRouter()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-
+	config := config.Init()
 	// router.HandleFunc("/api/user/register", controllers.CreateAccount).Methods("POST")
 	// router.HandleFunc("/api/user/login", controllers.Authenticate).Methods("POST")
 
@@ -39,7 +40,8 @@ func main() {
 	// 		fmt.Print(err)
 	// 	}
 	// }()
-	go models.ApplyAccruals(ctx, "10s")
-	controllers.NewHTTPServer()
+	models.DatabaseInit(config.Database)
+	go models.ApplyAccruals(ctx, config.Interval)
+	controllers.NewHTTPServer(config.ServerPort)
 
 }

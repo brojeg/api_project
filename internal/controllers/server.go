@@ -9,11 +9,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func NewHTTPServer() {
+func NewHTTPServer(port string) {
 
 	router := NewRouter()
 
-	if err := http.ListenAndServe(":8000", router); err != nil && !errors.Is(err, http.ErrServerClosed) {
+	if err := http.ListenAndServe(port, router); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		fmt.Printf("Cannot start http.ListenAndServe. Error is: /n %e", err)
 	} else {
 		fmt.Printf("application stopped gracefully")

@@ -5,27 +5,13 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/joho/godotenv"
 )
 
 var db *gorm.DB
 
-func init() {
+func DatabaseInit(connectionString string) {
 
-	e := godotenv.Load()
-	if e != nil {
-		fmt.Print(e)
-	}
-
-	username := "test_user"
-	password := "111"
-	dbName := "test"
-	dbHost := "localhost"
-
-	dbUri := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password)
-	fmt.Println(dbUri)
-
-	conn, err := gorm.Open("postgres", dbUri)
+	conn, err := gorm.Open("postgres", connectionString)
 	if err != nil {
 		fmt.Print(err)
 	}
