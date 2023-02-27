@@ -88,7 +88,7 @@ func (balance *Balance) Withdraw(sum float64) u.Response {
 }
 
 func ApplyAccruals(ctx context.Context, interval, accrualURL string) {
-	u.RequestAccrual(accrualURL)
+
 	inter, err := time.ParseDuration(interval)
 	if err != nil {
 		logger.Errorf("Cannot parse PollInterval value from config. Error is: \n %e", err)
