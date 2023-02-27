@@ -11,7 +11,7 @@ import (
 
 func RequestAccrual(endpont, orderid string) *models.Accrual {
 	accrual := &models.Accrual{}
-	resp, err := http.Get("endpont" + "/api/orders/" + orderid)
+	resp, err := http.Get(endpont + "/api/orders/" + orderid)
 	if err != nil {
 		log.Fatalln(err)
 	}
