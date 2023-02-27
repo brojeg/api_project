@@ -17,8 +17,8 @@ var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := account.Create() //Create account
-
+	resp, token := account.Create() //Create account
+	w.Header().Add("Authorization", token)
 	u.Respond(w, resp)
 }
 
