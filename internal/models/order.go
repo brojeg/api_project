@@ -28,14 +28,24 @@ func (order *Order) Validate() u.Response {
 	if order.Number == "" {
 		return u.Message(false, "Order number should be on the payload", 500)
 	}
-	temp := &Order{}
-	err := GetDB().Table("orders").Where("number = ?", order.Number).First(temp).Error
+
+	dbOrderExistsForUser := &Order{}
+	error := GetDB().Table("orders").Where("number = ? AND user_id = ?", order.Number, order.UserID).First(dbOrderExistsForUser).Error
+	if error != nil && error != gorm.ErrRecordNotFound {
+		return u.Message(false, "Connection error. Please retry", 500)
+	}
+	if dbOrderExistsForUser.Number != "" {
+		return u.Message(false, "This order already in use by this user.", 200)
+	}
+	dbOrderExists := &Order{}
+	err := GetDB().Table("orders").Where("number = ?", order.Number).First(dbOrderExists).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return u.Message(false, "Connection error. Please retry", 500)
 	}
-	if temp.Number != "" {
+	if dbOrderExists.Number != "" {
 		return u.Message(false, "Order already in use by another user.", 409)
 	}
+
 	//All the required parameters are present
 	return u.Message(true, "success", 200)
 }
@@ -48,7 +58,7 @@ func (order *Order) Create() u.Response {
 
 	GetDB().Create(order)
 
-	resp := u.Message(true, "success", 200)
+	resp := u.Message(true, "success", 202)
 	resp.Message = order
 	return resp
 }
