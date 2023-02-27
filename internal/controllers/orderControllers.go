@@ -14,12 +14,14 @@ var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 	// user := r.Context().Value("user").(uint) //Grab the id of the user that send the request
 	user, ok := models.GetUserFromContext(r.Context())
 	if !ok {
+		logger.Error("Could not get user from context")
 		u.Respond(w, u.Message(false, "Could not get user from context", 500))
 	}
 	order := &models.Order{Status: "NEW", UserID: user, UploadedAt: time.Now()}
 
 	err := json.NewDecoder(r.Body).Decode(order)
 	if err != nil {
+		logger.Error("Error while decoding request body")
 		u.Respond(w, u.Message(false, "Error while decoding request body", 500))
 		return
 	}

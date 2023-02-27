@@ -2,12 +2,17 @@ package controllers
 
 import (
 	"diploma/go-musthave-diploma-tpl/internal/models"
+	log "diploma/go-musthave-diploma-tpl/pkg/logger"
 	"errors"
 	"fmt"
 	"net/http"
 
+	"go.uber.org/zap"
+
 	"github.com/gorilla/mux"
 )
+
+var logger *zap.SugaredLogger = log.InitLogger()
 
 func NewHTTPServer(port string) {
 

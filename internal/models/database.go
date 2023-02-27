@@ -21,7 +21,7 @@ func GetDB() *gorm.DB {
 		logger.Errorf("Error is %e \n Connection string is %s", err, connectionString)
 	}
 
-	conn.Debug().AutoMigrate(&Account{}, &Order{}, &Balance{}, &BalanceHistory{})
+	conn.AutoMigrate(&Account{}, &Order{}, &Balance{}, &BalanceHistory{})
 
 	return conn
 }
