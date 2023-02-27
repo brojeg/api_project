@@ -14,7 +14,7 @@ type RawNumber struct {
 type Order struct {
 	//gorm.Model
 	ID         uint      `gorm:"primarykey" json:"-"`
-	Number     int64     `json:"number"`
+	Number     string    `json:"number"`
 	Status     string    `json:"status"`
 	Accrual    int64     `json:"accrual"`
 	UploadedAt time.Time `json:"-"`
@@ -23,7 +23,7 @@ type Order struct {
 
 func (order *Order) Validate() u.Response {
 
-	if order.Number == 0 {
+	if order.Number == "" {
 		return u.Message(false, "Order number should be on the payload", 500)
 	}
 
@@ -32,7 +32,7 @@ func (order *Order) Validate() u.Response {
 	if errorbOrderExistsForUser != nil && errorbOrderExistsForUser != gorm.ErrRecordNotFound {
 		return u.Message(false, "Connection error. Please retry", 500)
 	}
-	if dbOrderExistsForUser.Number != 0 {
+	if dbOrderExistsForUser.Number != "" {
 		return u.Message(false, "This order already in use by this user.", 200)
 	}
 	dbOrderExists := &Order{}
@@ -40,7 +40,7 @@ func (order *Order) Validate() u.Response {
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return u.Message(false, "Connection error. Please retry", 500)
 	}
-	if dbOrderExists.Number != 0 {
+	if dbOrderExists.Number != "" {
 		return u.Message(false, "Order already in use by another user.", 409)
 	}
 

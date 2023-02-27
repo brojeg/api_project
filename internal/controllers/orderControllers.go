@@ -4,6 +4,7 @@ import (
 	"diploma/go-musthave-diploma-tpl/internal/models"
 	u "diploma/go-musthave-diploma-tpl/internal/utils"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -21,7 +22,7 @@ var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 	if !u.IsLuhnValid(u.StringToIntSlice(rawOrderNumber)) {
 		u.Respond(w, u.Message(false, "Bad order number format", 422))
 	} else {
-		order := &models.Order{Status: "NEW", UserID: user, UploadedAt: time.Now(), Number: rawOrderNumber}
+		order := &models.Order{Status: "NEW", UserID: user, UploadedAt: time.Now(), Number: strconv.FormatInt(rawOrderNumber, 10)}
 		resp := order.Create()
 
 		u.Respond(w, resp)
