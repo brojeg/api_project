@@ -22,12 +22,12 @@ var WithdrawFromBalance = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	orderNumber := withdraw.Order
-	intSlice := u.StringToIntSlice(orderNumber)
-	if !u.IsLuhnValid(intSlice) {
+	// orderNumber := withdraw.Order
+	// intSlice := u.StringToIntSlice(orderNumber)
+	// if !u.IsLuhnValid(intSlice) {
 
-		u.Respond(w, u.Message(false, "Bad order number format", 422))
-	}
+	// 	u.Respond(w, u.Message(false, "Bad order number format", 422))
+	// }
 	currentBalance := models.GetBalance(user)
 
 	resp := currentBalance.Withdraw(withdraw.Sum)
