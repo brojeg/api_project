@@ -1,7 +1,6 @@
 package models
 
 import (
-	"context"
 	u "diploma/go-musthave-diploma-tpl/internal/utils"
 	log "diploma/go-musthave-diploma-tpl/pkg/logger"
 
@@ -24,6 +23,11 @@ type BalanceHistory struct {
 	Sum         float64   `json:"sum"`
 	ProcessedAt time.Time `json:"processed_at"`
 	UserID      uint      `json:"-"`
+}
+type Accrual struct {
+	Order   string `json:"order"`
+	Status  string `json:"status"`
+	Accrual int64  `json:"accrual"`
 }
 
 func GetBalance(id uint) *Balance {
@@ -85,34 +89,4 @@ func (balance *Balance) Withdraw(sum float64) u.Response {
 	resp := u.Message(true, "success", 200)
 	resp.Message = balance
 	return resp
-}
-
-func ApplyAccruals(ctx context.Context, interval, accrualURL string) {
-
-	inter, err := time.ParseDuration(interval)
-	if err != nil {
-		logger.Errorf("Cannot parse PollInterval value from config. Error is: \n %e", err)
-	}
-	ticker := time.NewTicker(inter)
-	for {
-
-		select {
-		case <-ticker.C:
-			ordersToProcess := GetOrdersToApplyAccrual("NEW")
-
-			for _, order := range ordersToProcess {
-				order.changeOrderStatus("REGISTERED")
-				order.changeOrderStatus("PROCESSING")
-				data := GetBalance(order.UserID)
-				data.Add(order.Accrual, order.UserID)
-				order.changeOrderStatus("PROCESSED")
-
-			}
-
-		case <-ctx.Done():
-			return
-
-		}
-	}
-
 }

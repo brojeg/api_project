@@ -46,9 +46,3 @@ func Respond(w http.ResponseWriter, data Response) {
 	}
 	json.NewEncoder(w).Encode(data.Message)
 }
-
-// func RequestAccrual(endpont string) {
-
-// 	fmt.Println(endpont)
-// 	panic("test")
-// }
