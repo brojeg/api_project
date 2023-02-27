@@ -5,7 +5,6 @@ import (
 	u "diploma/go-musthave-diploma-tpl/internal/utils"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -30,7 +29,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 
 		for _, value := range notAuth {
 
-			if value == requestPath || strings.Contains(requestPath, "/api/orders/") {
+			if value == requestPath {
 				next.ServeHTTP(w, r)
 				return
 			}
