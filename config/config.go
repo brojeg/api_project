@@ -61,7 +61,7 @@ func getParams() ServerConfig {
 			return nil
 		}
 
-		envCfg.Database = flagValue
+		envCfg.Accrual = flagValue
 		return nil
 	})
 
