@@ -15,6 +15,7 @@ func GetDB() *gorm.DB {
 
 	conn, err := gorm.Open("postgres", connectionString)
 	if err != nil {
+		logger.Error(connectionString)
 		logger.Errorf("Error is %e \n Connection string is %s", err, connectionString)
 	}
 
