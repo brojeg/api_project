@@ -103,10 +103,8 @@ func GetOrdersToApplyAccrual(status string) []*Order {
 	return orders
 }
 
-func (order *Order) changeOrderStatus(status string) *Order {
+func (order *Order) Save() {
 
-	order.Status = status
 	GetDB().Save(order)
-	return order
 
 }

@@ -43,6 +43,10 @@ func (bh *BalanceHistory) Save() {
 	GetDB().Save(bh)
 
 }
+func (b *Balance) Save() {
+	GetDB().Save(b)
+
+}
 
 func GetBalanceHistory(user uint) []*BalanceHistory {
 

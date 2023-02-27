@@ -45,6 +45,8 @@ func ApplyAccruals(ctx context.Context, interval, accrualURL string) {
 					order.Accrual = float64(accrual.Accrual)
 					order.Status = accrual.Status
 					balance.Add(order.Accrual, order.UserID)
+					order.Save()
+					balance.Save()
 				}
 
 				// order.changeOrderStatus("PROCESSED")

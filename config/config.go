@@ -11,7 +11,7 @@ import (
 
 type ServerConfig struct {
 	ServerPort string `env:"ADDRESS" envDefault:"127.0.0.1:8080"`
-	Interval   string `env:"INTERVAL" envDefault:"10s"`
+	Interval   string `env:"INTERVAL" envDefault:"5s"`
 	Database   string `env:"DATABASE_DSN" envDefault:"postgresql://postgres:postgres@postgres/praktikum?sslmode=disable"`
 	Accrual    string `env:"ACCRUAL_SYSTEM_ADDRESS"`
 }
