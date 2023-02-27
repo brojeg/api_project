@@ -13,9 +13,13 @@ func InitDBConnectionString(conn string) {
 	connectionString = conn
 }
 
+func getConstring() string {
+	return connectionString
+}
+
 func GetDB() *gorm.DB {
 
-	conn, err := gorm.Open("postgres", connectionString)
+	conn, err := gorm.Open("postgres", getConstring())
 	if err != nil {
 		fmt.Println(connectionString)
 		logger.Errorf("Error is %e \n Connection string is %s", err, connectionString)
