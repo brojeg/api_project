@@ -5,9 +5,10 @@ import (
 	"os"
 	"strings"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
-	"golang.org/x/crypto/bcrypt"
 )
 
 /*
@@ -20,41 +21,42 @@ type Token struct {
 
 // a struct to rep user account
 type Account struct {
-	gorm.Model
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Token    string `json:"token";sql:"-"`
+	ID       uint   `gorm:"primarykey"`
+	Login    string `json:"login"`
+	Password string `json:"password,omitempty"`
+	Token    string `json:"token" sql:"-"`
 }
 
 // Validate incoming user details...
-func (account *Account) Validate() (map[string]interface{}, bool) {
+func (account *Account) Validate() u.Response {
 
-	if !strings.Contains(account.Email, "@") {
-		return u.Message(false, "Email address is required"), false
+	if !strings.Contains(account.Login, "@") {
+
+		return u.Message(false, "Email address is required", 400)
 	}
 
 	if len(account.Password) < 6 {
-		return u.Message(false, "Password is required"), false
+		return u.Message(false, "Password is required", 400)
 	}
 
 	//Email must be unique
 	temp := &Account{}
 
 	//check for errors and duplicate emails
-	err := GetDB().Table("accounts").Where("email = ?", account.Email).First(temp).Error
+	err := GetDB().Table("accounts").Where("login = ?", account.Login).First(temp).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return u.Message(false, "Connection error. Please retry"), false
+		return u.Message(false, "Connection error. Please retry", 500)
 	}
-	if temp.Email != "" {
-		return u.Message(false, "Email address already in use by another user."), false
+	if temp.Login != "" {
+		return u.Message(false, "Email address already in use by another user.", 409)
 	}
 
-	return u.Message(false, "Requirement passed"), true
+	return u.Message(true, "Requirement passed", 200)
 }
 
-func (account *Account) Create() map[string]interface{} {
+func (account *Account) Create() u.Response {
 
-	if resp, ok := account.Validate(); !ok {
+	if resp := account.Validate(); !resp.Status {
 		return resp
 	}
 
@@ -64,36 +66,39 @@ func (account *Account) Create() map[string]interface{} {
 	GetDB().Create(account)
 
 	if account.ID <= 0 {
-		return u.Message(false, "Failed to create account, connection error.")
+		return u.Message(false, "Failed to create account, connection error.", 500)
 	}
 
 	//Create new JWT token for the newly registered account
 	tk := &Token{UserId: account.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
-	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
+	tokenString, err := token.SignedString([]byte(os.Getenv("token_password")))
+	if err != nil {
+		panic(err)
+	}
 	account.Token = tokenString
 
 	account.Password = "" //delete password
 
-	response := u.Message(true, "Account has been created")
-	response["account"] = account
+	response := u.Message(true, "Account has been created", 200)
+	response.Message = account
 	return response
 }
 
-func Login(email, password string) map[string]interface{} {
+func Login(email, password string) u.Response {
 
 	account := &Account{}
-	err := GetDB().Table("accounts").Where("email = ?", email).First(account).Error
+	err := GetDB().Table("accounts").Where("login = ?", email).First(account).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return u.Message(false, "Email address not found")
+			return u.Message(false, "Email address not found", 500)
 		}
-		return u.Message(false, "Connection error. Please retry")
+		return u.Message(false, "Connection error. Please retry", 500)
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(password))
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword { //Password does not match!
-		return u.Message(false, "Invalid login credentials. Please try again")
+		return u.Message(false, "Invalid login credentials. Please try again", 401)
 	}
 	//Worked! Logged In
 	account.Password = ""
@@ -104,8 +109,8 @@ func Login(email, password string) map[string]interface{} {
 	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	account.Token = tokenString //Store the token in the response
 
-	resp := u.Message(true, "Logged In")
-	resp["account"] = account
+	resp := u.Message(true, "Logged In", 200)
+	resp.Message = account
 	return resp
 }
 
@@ -113,7 +118,7 @@ func GetUser(u uint) *Account {
 
 	acc := &Account{}
 	GetDB().Table("accounts").Where("id = ?", u).First(acc)
-	if acc.Email == "" { //User not found!
+	if acc.Login == "" { //User not found!
 		return nil
 	}
 

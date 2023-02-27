@@ -8,6 +8,7 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.5.1
 	golang.org/x/crypto v0.6.0
+	golang.org/x/time v0.3.0
 )
 
 require (
