@@ -3,7 +3,6 @@ package controllers
 import (
 	"diploma/go-musthave-diploma-tpl/internal/models"
 	u "diploma/go-musthave-diploma-tpl/internal/utils"
-	"encoding/json"
 	"net/http"
 	"time"
 
@@ -17,19 +16,12 @@ var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 		logger.Error("Could not get user from context")
 		u.Respond(w, u.Message(false, "Could not get user from context", 500))
 	}
-	order := &models.Order{Status: "NEW", UserID: user, UploadedAt: time.Now()}
 
-	err := json.NewDecoder(r.Body).Decode(order)
-	if err != nil {
-		logger.Error(r.Body)
-		logger.Error("Error while decoding request body")
-		u.Respond(w, u.Message(false, "Error while decoding request body", 500))
-		return
-	}
-
-	if !u.IsLuhnValid(u.StringToIntSlice(order.Number)) {
+	rawOrderNumber := u.GetRawOrderNumber(r.Body)
+	if !u.IsLuhnValid(u.StringToIntSlice(rawOrderNumber)) {
 		u.Respond(w, u.Message(false, "Bad order number format", 422))
 	} else {
+		order := &models.Order{Status: "NEW", UserID: user, UploadedAt: time.Now(), Number: rawOrderNumber}
 		resp := order.Create()
 
 		u.Respond(w, resp)

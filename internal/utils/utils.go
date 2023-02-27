@@ -14,7 +14,7 @@ type Response struct {
 func Message(status bool, message string, serverCode int) Response {
 
 	return Response{Status: status, Message: message, ServerCode: serverCode}
-	// map[string]interface{}{"status": status, "message": message}
+
 }
 
 func Respond(w http.ResponseWriter, data Response) {

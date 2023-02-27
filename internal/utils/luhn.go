@@ -1,5 +1,11 @@
 package utils
 
+import (
+	"io"
+	"io/ioutil"
+	"strconv"
+)
+
 func IsLuhnValid(value []int64) bool {
 
 	sum := computeCheckSum(value)
@@ -41,4 +47,17 @@ func StringToIntSlice(n int64) []int64 {
 	reverseInt(ret)
 
 	return ret
+}
+
+func GetRawOrderNumber(body io.Reader) int64 {
+	b, err := ioutil.ReadAll(body)
+	if err != nil {
+		panic(err)
+	}
+
+	rawOrderNumber, err := strconv.ParseInt(string(b), 10, 64)
+	if err != nil {
+		panic(err)
+	}
+	return rawOrderNumber
 }

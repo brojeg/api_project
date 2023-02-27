@@ -7,6 +7,10 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+type RawNumber struct {
+	Number int64 `json:"-"`
+}
+
 type Order struct {
 	//gorm.Model
 	ID         uint      `gorm:"primarykey" json:"-"`
