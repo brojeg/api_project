@@ -13,15 +13,15 @@ import (
 var logger *zap.SugaredLogger = log.InitLogger()
 
 type Balance struct {
-	ID        uint  `gorm:"primarykey" json:"-"`
-	Current   int64 `json:"current"`
-	Withdrawn int64 `json:"withdrawn"`
-	UserID    uint  `json:"-"`
+	ID        uint    `gorm:"primarykey" json:"-"`
+	Current   float64 `json:"current"`
+	Withdrawn float64 `json:"withdrawn"`
+	UserID    uint    `json:"-"`
 }
 
 type BalanceHistory struct {
 	Order       int64     `json:"order"`
-	Sum         int64     `json:"sum"`
+	Sum         float64   `json:"sum"`
 	ProcessedAt time.Time `json:"processed_at"`
 	UserID      uint      `json:"-"`
 }
@@ -52,7 +52,7 @@ func GetBalanceHistory(user uint) []*BalanceHistory {
 	return history
 }
 
-func (balance *Balance) Add(sum int64, user uint) u.Response {
+func (balance *Balance) Add(sum float64, user uint) u.Response {
 	emptyBalance := Balance{UserID: user}
 	if balance == nil {
 		balance = &emptyBalance
@@ -69,7 +69,7 @@ func (balance *Balance) Add(sum int64, user uint) u.Response {
 	resp.Message = balance
 	return resp
 }
-func (balance *Balance) Withdraw(sum int64) u.Response {
+func (balance *Balance) Withdraw(sum float64) u.Response {
 
 	if balance == nil {
 		return u.Message(false, "No active balance avalable", 402)

@@ -16,7 +16,7 @@ type Order struct {
 	ID         uint      `gorm:"primarykey" json:"-"`
 	Number     string    `json:"number"`
 	Status     string    `json:"status"`
-	Accrual    int64     `json:"accrual"`
+	Accrual    float64   `json:"accrual"`
 	UploadedAt time.Time `json:"-"`
 	UserID     uint      `json:"-"` //The user that this contact belongs to
 }
