@@ -21,6 +21,7 @@ var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(order)
 	if err != nil {
+		logger.Error(r.Body)
 		logger.Error("Error while decoding request body")
 		u.Respond(w, u.Message(false, "Error while decoding request body", 500))
 		return
