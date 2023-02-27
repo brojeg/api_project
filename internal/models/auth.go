@@ -3,10 +3,8 @@ package models
 import (
 	"context"
 	u "diploma/go-musthave-diploma-tpl/internal/utils"
-	"fmt"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
@@ -14,16 +12,7 @@ import (
 
 type contextKey string
 
-func (c contextKey) test() uint {
-	u64, err := strconv.ParseUint(string(c), 10, 32)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return uint(u64)
-}
-
 var (
-	// ContextKeyDeleteCaller var
 	ContextUserKey = contextKey("user")
 )
 

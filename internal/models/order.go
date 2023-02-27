@@ -17,21 +17,17 @@ type Order struct {
 	UserID     uint      `json:"-"` //The user that this contact belongs to
 }
 
-/*
-	This struct function validate the required parameters sent through the http request body
-
-returns message and true if the requirement is met
-*/
-
 func (order *Order) Validate() u.Response {
 
 	if order.Number == "" {
+		logger.Error("Order number should be on the payload")
 		return u.Message(false, "Order number should be on the payload", 500)
 	}
 
 	dbOrderExistsForUser := &Order{}
 	error := GetDB().Table("orders").Where("number = ? AND user_id = ?", order.Number, order.UserID).First(dbOrderExistsForUser).Error
 	if error != nil && error != gorm.ErrRecordNotFound {
+		logger.Error("Connection error dbOrderExistsForUser. Please retry")
 		return u.Message(false, "Connection error. Please retry", 500)
 	}
 	if dbOrderExistsForUser.Number != "" {
@@ -40,13 +36,13 @@ func (order *Order) Validate() u.Response {
 	dbOrderExists := &Order{}
 	err := GetDB().Table("orders").Where("number = ?", order.Number).First(dbOrderExists).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
+		logger.Error("Connection error dbOrderExists. Please retry")
 		return u.Message(false, "Connection error. Please retry", 500)
 	}
 	if dbOrderExists.Number != "" {
 		return u.Message(false, "Order already in use by another user.", 409)
 	}
 
-	//All the required parameters are present
 	return u.Message(true, "success", 200)
 }
 

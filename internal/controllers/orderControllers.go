@@ -28,10 +28,7 @@ var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 		u.Respond(w, u.Message(false, "Bad order number format", 422))
 	} else {
 		resp := order.Create()
-		// if order.Accrual != 0 && resp.Status {
-		// 	data := models.GetBalance(user)
-		// 	data.Add(order.Accrual, user)
-		// }
+
 		u.Respond(w, resp)
 	}
 
