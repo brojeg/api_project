@@ -5,18 +5,20 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-var db *gorm.DB
+var connectionString string
 
-func InitDb(connectionString string) {
+func InitDBConnectionString(conn string) {
+	connectionString = conn
+}
+
+func GetDB() *gorm.DB {
+
 	conn, err := gorm.Open("postgres", connectionString)
 	if err != nil {
 		logger.Errorf("Error is %e \n Connection string is %s", err, connectionString)
 	}
 
-	db = conn
-	db.Debug().AutoMigrate(&Account{}, &Order{}, &Balance{}, &BalanceHistory{})
-}
-func GetDB() *gorm.DB {
+	conn.Debug().AutoMigrate(&Account{}, &Order{}, &Balance{}, &BalanceHistory{})
 
-	return db
+	return conn
 }

@@ -82,6 +82,7 @@ func (account *Account) Create() (u.Response, string) {
 func Login(email, password string) u.Response {
 
 	account := &Account{}
+
 	err := GetDB().Table("accounts").Where("login = ?", email).First(account).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {

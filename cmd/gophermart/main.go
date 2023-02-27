@@ -12,7 +12,7 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	config := config.Init()
-	models.InitDb(config.Database)
+	models.InitDBConnectionString(config.Database)
 	go models.ApplyAccruals(ctx, config.Interval)
 	controllers.NewHTTPServer(config.ServerPort)
 
