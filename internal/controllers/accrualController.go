@@ -29,7 +29,7 @@ func RequestAccrual(endpont, orderid string) *models.Accrual {
 
 	// // print response body
 	// fmt.Println(string(body))
-	fmt.Println(accrual)
+
 	return accrual
 }
 
@@ -52,12 +52,16 @@ func ApplyAccruals(ctx context.Context, interval, accrualURL string) {
 				order := models.GetOrderByNumber(order.Number)
 				balance := models.GetBalance(order.UserID)
 				accrualForOrder := RequestAccrual(accrualURL, order.Number)
+				fmt.Println(accrualForOrder)
+				if order != nil && accrualForOrder != nil {
+					order.Accrual = accrualForOrder.Accrual
+					order.Status = accrualForOrder.Status
+					balance.Add(order.Accrual, order.UserID)
+					order.Save()
+					balance.Save()
+				}
 				// if accrualForOrder != nil {
-				order.Accrual = accrualForOrder.Accrual
-				order.Status = accrualForOrder.Status
-				balance.Add(order.Accrual, order.UserID)
-				order.Save()
-				balance.Save()
+
 				// }
 
 				// order.changeOrderStatus("PROCESSED")
