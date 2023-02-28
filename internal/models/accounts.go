@@ -86,14 +86,14 @@ func Login(email, password string) (u.Response, string) {
 	err := GetDB().Table("accounts").Where("login = ?", email).First(account).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return u.Message(false, "Email address not found", 500)
+			return u.Message(false, "Email address not found", 500), ""
 		}
-		return u.Message(false, "Connection error. Please retry", 500)
+		return u.Message(false, "Connection error. Please retry", 500), ""
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(password))
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword { //Password does not match!
-		return u.Message(false, "Invalid login credentials. Please try again", 401)
+		return u.Message(false, "Invalid login credentials. Please try again", 401), ""
 	}
 	//Worked! Logged In
 	account.Password = ""
