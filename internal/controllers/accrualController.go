@@ -3,8 +3,7 @@ package controllers
 import (
 	"context"
 	"diploma/go-musthave-diploma-tpl/internal/models"
-	"fmt"
-	"io/ioutil"
+	"encoding/json"
 	"net/http"
 	"time"
 )
@@ -17,19 +16,19 @@ func RequestAccrual(endpont, orderid string) *models.Accrual {
 		logger.Error(err)
 		return accrual
 	}
-	// errDecode := json.NewDecoder(resp.Body).Decode(accrual)
-	// if errDecode != nil {
-	// 	logger.Error(err)
-	// }
-	body, error := ioutil.ReadAll(resp.Body)
-	if error != nil {
-		fmt.Println(error)
+	errDecode := json.NewDecoder(resp.Body).Decode(accrual)
+	if errDecode != nil {
+		logger.Error(err)
 	}
-	// close response body
-	resp.Body.Close()
+	// body, error := ioutil.ReadAll(resp.Body)
+	// if error != nil {
+	// 	fmt.Println(error)
+	// }
+	// // close response body
+	// resp.Body.Close()
 
-	// print response body
-	fmt.Println(string(body))
+	// // print response body
+	// fmt.Println(string(body))
 
 	return accrual
 }
@@ -54,7 +53,7 @@ func ApplyAccruals(ctx context.Context, interval, accrualURL string) {
 				balance := models.GetBalance(order.UserID)
 				accrual := RequestAccrual(accrualURL, order.Number)
 				if accrual != nil {
-					order.Accrual = float64(accrual.Accrual)
+					order.Accrual = accrual.Accrual
 					order.Status = accrual.Status
 					balance.Add(order.Accrual, order.UserID)
 					order.Save()

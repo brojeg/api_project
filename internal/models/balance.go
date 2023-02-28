@@ -25,9 +25,9 @@ type BalanceHistory struct {
 	UserID      uint      `json:"-"`
 }
 type Accrual struct {
-	Order   string `json:"order"`
-	Status  string `json:"status,omitempty"`
-	Accrual int64  `json:"accrual,omitempty"`
+	Order   string  `json:"order"`
+	Status  string  `json:"status,omitempty"`
+	Accrual float64 `json:"accrual,omitempty"`
 }
 
 func GetBalance(id uint) *Balance {
