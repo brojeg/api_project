@@ -47,23 +47,22 @@ func ApplyAccruals(ctx context.Context, interval, accrualURL string) {
 			ordersToProcess := models.GetOrdersToApplyAccrual("NEW")
 
 			for _, order := range ordersToProcess {
-				var balance *models.Balance
+				// var balance *models.Balance
 				var accrualForOrder *models.Accrual
 				// order.changeOrderStatus("REGISTERED")
 				// order.changeOrderStatus("PROCESSING")
 				order := models.GetOrderByNumber(order.Number)
 				if order != nil {
-					balance = models.GetBalance(order.UserID)
+					// balance = models.GetBalance(order.UserID)
 					accrualForOrder = RequestAccrual(accrualURL, order.Number)
 				}
-
 				fmt.Println(accrualForOrder)
 				if order != nil && accrualForOrder != nil {
 					order.Accrual = accrualForOrder.Accrual
 					order.Status = accrualForOrder.Status
-					balance.Add(order.Accrual, order.UserID)
+					// balance.Add(order.Accrual, order.UserID)
 					order.Save()
-					balance.Save()
+					// balance.Save()
 				}
 				// if accrualForOrder != nil {
 
