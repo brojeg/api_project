@@ -44,12 +44,13 @@ func (order *Order) Validate() u.Response {
 		return u.Message("Order already in use by another user.", 409)
 	}
 
-	return u.Message("success", 200)
+	// return u.Message("success", 200)
+	return u.Message("success", 0)
 }
 
 func (order *Order) Create() u.Response {
 
-	if resp := order.Validate(); resp.ServerCode != 200 {
+	if resp := order.Validate(); resp.ServerCode != 0 {
 		return resp
 	}
 
