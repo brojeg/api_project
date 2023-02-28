@@ -1,62 +1,75 @@
 package utils
 
 import (
+	"errors"
 	"io"
-	"strconv"
 )
 
-func IsLuhnValid(value []int64) bool {
+const (
+	asciiZero = 48
+	asciiTen  = 57
+)
 
-	sum := computeCheckSum(value)
-	return sum%10 == 0
+func IsLuhnValid(number string) bool {
+	p := len(number) % 2
+	sum, err := calculateLuhnSum(number, p)
+	if err != nil {
+		return false
+	}
+
+	// If the total modulo 10 is not equal to 0, then the number is invalid.
+	if sum%10 != 0 {
+		return false
+	}
+
+	return true
 }
-func computeCheckSum(data []int64) int64 {
+func calculateLuhnSum(number string, parity int) (int64, error) {
 	var sum int64
-	double := false
-	for _, n := range data {
-		if double {
-			n = (n * 2)
-			if n > 9 {
-				n = (n - 9)
+	for i, d := range number {
+		if d < asciiZero || d > asciiTen {
+			return 0, errors.New("invalid digit")
+		}
+
+		d = d - asciiZero
+		// Double the value of every second digit.
+		if i%2 == parity {
+			d *= 2
+			// If the result of this doubling operation is greater than 9.
+			if d > 9 {
+				// The same final result can be found by subtracting 9 from that result.
+				d -= 9
 			}
 		}
-		sum += n
-		double = !double
-	}
-	return sum
-}
 
-func reverseInt(s []int64) {
-	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
-		s[i], s[j] = s[j], s[i]
-	}
-}
-
-func StringToIntSlice(n int64) []int64 {
-	var ret []int64
-	// i, err := strconv.ParseInt(n, 10, 64)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	for n != 0 {
-		ret = append(ret, n%10)
-		n /= 10
+		// Take the sum of all the digits.
+		sum += int64(d)
 	}
 
-	reverseInt(ret)
-
-	return ret
+	return sum, nil
 }
 
-func GetRawOrderNumber(body io.Reader) int64 {
+// func StringToIntSlice(n int64) []int64 {
+// 	var ret []int64
+// 	// i, err := strconv.ParseInt(n, 10, 64)
+// 	// if err != nil {
+// 	// 	panic(err)
+// 	// }
+// 	for n != 0 {
+// 		ret = append(ret, n%10)
+// 		n /= 10
+// 	}
+
+// 	reverseInt(ret)
+
+// 	return ret
+// }
+
+func GetRawOrderNumber(body io.Reader) (string, error) {
 	b, err := io.ReadAll(body)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	rawOrderNumber, err := strconv.ParseInt(string(b), 10, 64)
-	if err != nil {
-		panic(err)
-	}
-	return rawOrderNumber
+	return string(b), nil
 }
