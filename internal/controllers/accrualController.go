@@ -5,7 +5,6 @@ import (
 	"diploma/go-musthave-diploma-tpl/internal/models"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"time"
 )
@@ -21,15 +20,15 @@ func RequestAccrual(endpont, orderid string) *models.Accrual {
 	if errDecode != nil {
 		logger.Error(err)
 	}
-	body, error := io.ReadAll(resp.Body)
-	if error != nil {
-		fmt.Println(error)
-	}
-	// close response body
-	resp.Body.Close()
+	// body, error := io.ReadAll(resp.Body)
+	// if error != nil {
+	// 	fmt.Println(error)
+	// }
+	// // close response body
+	// resp.Body.Close()
 
-	// print response body
-	fmt.Println(string(body))
+	// // print response body
+	// fmt.Println(string(body))
 	fmt.Println(accrual)
 	return accrual
 }
