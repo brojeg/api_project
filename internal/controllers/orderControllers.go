@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"diploma/go-musthave-diploma-tpl/internal/models"
 	mod "diploma/go-musthave-diploma-tpl/internal/models"
 	math "diploma/go-musthave-diploma-tpl/pkg/math"
 	"io"
@@ -12,7 +11,7 @@ import (
 )
 
 var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
-	user, ok := models.GetUserFromContext(r.Context())
+	user, ok := mod.GetUserFromContext(r.Context())
 	if !ok {
 		logger.Error("Could not get user from context")
 		mod.Respond(w, mod.Message("Could not get user from context", 500))
@@ -24,7 +23,7 @@ var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 	if !math.IsLuhnValid(rawOrderNumber) {
 		mod.Respond(w, mod.Message("Bad order number format", 422))
 	} else {
-		order := &models.Order{Status: "NEW", UserID: user, UploadedAt: time.Now(), Number: rawOrderNumber}
+		order := &mod.Order{Status: "NEW", UserID: user, UploadedAt: time.Now(), Number: rawOrderNumber}
 		resp := order.Create()
 		mod.Respond(w, resp)
 	}
@@ -34,11 +33,11 @@ var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 var GetOrdersFor = func(w http.ResponseWriter, r *http.Request) {
 
 	resp := mod.Response{}
-	user, ok := models.GetUserFromContext(r.Context())
+	user, ok := mod.GetUserFromContext(r.Context())
 	if !ok {
 		mod.Respond(w, mod.Message("Could not get user from context", 500))
 	}
-	data := models.GetOrders(user)
+	data := mod.GetOrders(user)
 	resp = mod.Message("success", 200)
 	if len(data) == 0 {
 		resp = mod.Message("No orders to display", 204)
@@ -51,7 +50,7 @@ var GetOrder = func(w http.ResponseWriter, r *http.Request) {
 	param := mux.Vars(r)
 	number := param["number"]
 
-	order := models.GetOrderByNumber(number)
+	order := mod.GetOrderByNumber(number)
 	resp := mod.Message("success", 200)
 	if order == nil {
 		resp = mod.Message("No orders to display", 204)
