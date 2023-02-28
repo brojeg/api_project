@@ -79,7 +79,7 @@ func (account *Account) Create() (u.Response, string, uint) {
 	return response, account.Token, account.ID
 }
 
-func Login(email, password string) u.Response {
+func Login(email, password string) (u.Response, string) {
 
 	account := &Account{}
 
@@ -106,7 +106,7 @@ func Login(email, password string) u.Response {
 
 	resp := u.Message(true, "Logged In", 200)
 	resp.Message = account
-	return resp
+	return resp, tokenString
 }
 
 func GetUser(u uint) *Account {

@@ -34,6 +34,7 @@ var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := models.Login(account.Login, account.Password)
+	resp, token := models.Login(account.Login, account.Password)
+	w.Header().Add("Authorization", token)
 	u.Respond(w, resp)
 }
