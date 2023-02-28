@@ -19,14 +19,14 @@ var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rawOrderNumber := u.GetRawOrderNumber(r.Body)
-	// if !u.IsLuhnValid(u.StringToIntSlice(rawOrderNumber)) {
-	// 	u.Respond(w, u.Message(false, "Bad order number format", 422))
-	// } else {
-	order := &models.Order{Status: "NEW", UserID: user, UploadedAt: time.Now(), Number: strconv.FormatInt(rawOrderNumber, 10)}
-	resp := order.Create()
+	if !u.IsLuhnValid(u.StringToIntSlice(rawOrderNumber)) {
+		u.Respond(w, u.Message(false, "Bad order number format", 422))
+	} else {
+		order := &models.Order{Status: "NEW", UserID: user, UploadedAt: time.Now(), Number: strconv.FormatInt(rawOrderNumber, 10)}
+		resp := order.Create()
 
-	u.Respond(w, resp)
-	// }
+		u.Respond(w, resp)
+	}
 
 }
 
