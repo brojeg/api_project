@@ -4,7 +4,6 @@ import (
 	"context"
 	"diploma/go-musthave-diploma-tpl/config"
 	"diploma/go-musthave-diploma-tpl/internal/controllers"
-	"diploma/go-musthave-diploma-tpl/internal/models"
 )
 
 func main() {
@@ -12,8 +11,6 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	config := config.Init()
-	models.InitDBConnectionString(config.Database)
-	models.InitAccrualURL(config.Accrual)
 	go controllers.ApplyAccruals(ctx, config.Interval, config.Accrual)
 	controllers.NewHTTPServer(config.ServerPort)
 

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"diploma/go-musthave-diploma-tpl/internal/models"
 	"flag"
 	"log"
 	"os"
@@ -11,7 +12,7 @@ import (
 type ServerConfig struct {
 	ServerPort string `env:"ADDRESS" envDefault:"127.0.0.1:8080"`
 	Interval   string `env:"INTERVAL" envDefault:"5s"`
-	Database   string `env:"DATABASE_DSN" envDefault:"postgresql://postgres:postgres@postgres/praktikum?sslmode=disable"`
+	Database   string `env:"DATABASE_DSN"`
 	Accrual    string `env:"ACCRUAL_SYSTEM_ADDRESS"`
 }
 
@@ -46,5 +47,9 @@ func Init() ServerConfig {
 		return nil
 	})
 	flag.Parse()
+
+	models.InitDBConnectionString(envCfg.Database)
+	models.InitAccrualURL(envCfg.Accrual)
+
 	return envCfg
 }
