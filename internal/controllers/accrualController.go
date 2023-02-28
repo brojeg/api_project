@@ -4,6 +4,7 @@ import (
 	"context"
 	"diploma/go-musthave-diploma-tpl/internal/models"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -14,7 +15,6 @@ func RequestAccrual(endpont, orderid string) *models.Accrual {
 	resp, err := http.Get(URL)
 	if err != nil {
 		logger.Error(err)
-		return accrual
 	}
 	errDecode := json.NewDecoder(resp.Body).Decode(accrual)
 	if errDecode != nil {
@@ -29,7 +29,7 @@ func RequestAccrual(endpont, orderid string) *models.Accrual {
 
 	// // print response body
 	// fmt.Println(string(body))
-
+	fmt.Println(accrual)
 	return accrual
 }
 
