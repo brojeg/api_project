@@ -22,7 +22,7 @@ func GetUserFromContext(ctx context.Context) (uint, bool) {
 
 var JwtAuthentication = func(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		notAuth := []string{"/api/user/register", "/api/user/login", "/api/orders/"}
+		notAuth := []string{"/api/user/register", "/api/user/login"}
 		requestPath := r.URL.Path
 		for _, value := range notAuth {
 			if value == requestPath {

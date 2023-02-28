@@ -31,11 +31,8 @@ func NewRouter() *mux.Router {
 
 	router.HandleFunc("/api/user/register", CreateAccount).Methods("POST")
 	router.HandleFunc("/api/user/login", Authenticate).Methods("POST")
-
 	router.HandleFunc("/api/user/orders", CreateOrder).Methods("POST")
 	router.HandleFunc("/api/user/orders", GetOrdersFor).Methods("GET")
-	// router.HandleFunc("/api/orders/{number}", GetOrder).Methods("GET")
-
 	router.HandleFunc("/api/user/balance", GetBalanceFor).Methods("GET")
 	router.HandleFunc("/api/user/balance/withdraw", WithdrawFromBalance).Methods("POST")
 	router.HandleFunc("/api/user/withdrawals", GetBalancHistoryFor).Methods("GET")
