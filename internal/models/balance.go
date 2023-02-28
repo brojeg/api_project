@@ -43,8 +43,8 @@ func (bh *BalanceHistory) Save() {
 	GetDB().Save(bh)
 
 }
-func (b *Balance) Save() {
-	GetDB().Save(b)
+func (balance *Balance) Save() {
+	GetDB().Save(balance)
 
 }
 

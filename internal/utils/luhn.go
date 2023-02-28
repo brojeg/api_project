@@ -2,7 +2,6 @@ package utils
 
 import (
 	"io"
-	"io/ioutil"
 	"strconv"
 )
 
@@ -50,7 +49,7 @@ func StringToIntSlice(n int64) []int64 {
 }
 
 func GetRawOrderNumber(body io.Reader) int64 {
-	b, err := ioutil.ReadAll(body)
+	b, err := io.ReadAll(body)
 	if err != nil {
 		panic(err)
 	}
