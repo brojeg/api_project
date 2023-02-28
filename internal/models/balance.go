@@ -19,7 +19,7 @@ type Balance struct {
 }
 
 type BalanceHistory struct {
-	Order       int64     `json:"order"`
+	Order       string    `json:"order"`
 	Sum         float64   `json:"sum"`
 	ProcessedAt time.Time `json:"processed_at"`
 	UserID      uint      `json:"-"`
