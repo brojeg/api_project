@@ -8,8 +8,8 @@ import (
 	"time"
 )
 
-func RequestAccrual(endpont, orderid string) *models.Accrual {
-	accrual := &models.Accrual{}
+func RequestAccrual(endpont, orderid string) *[]models.Accrual {
+	accrual := &[]models.Accrual{}
 	URL := endpont + "/api/orders/" + orderid
 	resp, err := http.Get(URL)
 	if err != nil {
@@ -40,14 +40,14 @@ func ApplyAccruals(ctx context.Context, interval, accrualURL string) {
 				// order.changeOrderStatus("REGISTERED")
 				// order.changeOrderStatus("PROCESSING")
 				order := models.GetOrderByNumber(order.Number)
-				balance := models.GetBalance(order.UserID)
+				models.GetBalance(order.UserID)
 				accrual := RequestAccrual(accrualURL, order.Number)
 				if accrual != nil {
-					order.Accrual = float64(accrual.Accrual)
-					order.Status = accrual.Status
-					balance.Add(order.Accrual, order.UserID)
-					order.Save()
-					balance.Save()
+					// order.Accrual = float64(accrual.Accrual)
+					// order.Status = accrual.Status
+					// balance.Add(order.Accrual, order.UserID)
+					// order.Save()
+					// balance.Save()
 				}
 
 				// order.changeOrderStatus("PROCESSED")
