@@ -24,38 +24,38 @@ type Order struct {
 func (order *Order) Validate() u.Response {
 
 	if order.Number == "" {
-		return u.Message(false, "Order number should be on the payload", 500)
+		return u.Message("Order number should be on the payload", 500)
 	}
 
 	dbOrderExistsForUser := &Order{}
 	errorbOrderExistsForUser := GetDB().Table("orders").Where("number = ? AND user_id = ?", order.Number, order.UserID).First(dbOrderExistsForUser).Error
 	if errorbOrderExistsForUser != nil && errorbOrderExistsForUser != gorm.ErrRecordNotFound {
-		return u.Message(false, "Connection error. Please retry", 500)
+		return u.Message("Connection error. Please retry", 500)
 	}
 	if dbOrderExistsForUser.Number != "" {
-		return u.Message(false, "This order already in use by this user.", 200)
+		return u.Message("This order already in use by this user.", 200)
 	}
 	dbOrderExists := &Order{}
 	err := GetDB().Table("orders").Where("number = ?", order.Number).First(dbOrderExists).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return u.Message(false, "Connection error. Please retry", 500)
+		return u.Message("Connection error. Please retry", 500)
 	}
 	if dbOrderExists.Number != "" {
-		return u.Message(false, "Order already in use by another user.", 409)
+		return u.Message("Order already in use by another user.", 409)
 	}
 
-	return u.Message(true, "success", 200)
+	return u.Message("success", 200)
 }
 
 func (order *Order) Create() u.Response {
 
-	if resp := order.Validate(); !resp.Status {
+	if resp := order.Validate(); resp.ServerCode != 200 {
 		return resp
 	}
 
 	GetDB().Create(order)
 
-	resp := u.Message(true, "success", 202)
+	resp := u.Message("success", 202)
 	resp.Message = order
 	return resp
 }

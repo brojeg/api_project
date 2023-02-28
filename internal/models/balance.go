@@ -66,31 +66,31 @@ func (balance *Balance) Add(sum float64, user uint) u.Response {
 		balance = &emptyBalance
 		balance.Current = sum + balance.Current
 		GetDB().Create(balance)
-		resp := u.Message(true, "success", 200)
+		resp := u.Message("success", 200)
 		resp.Message = balance
 		return resp
 	}
 	balance.Current = sum + balance.Current
 	GetDB().Save(balance)
 
-	resp := u.Message(true, "success", 200)
+	resp := u.Message("success", 200)
 	resp.Message = balance
 	return resp
 }
 func (balance *Balance) Withdraw(sum float64) u.Response {
 
 	if balance == nil {
-		return u.Message(false, "No active balance avalable", 402)
+		return u.Message("No active balance avalable", 402)
 	}
 	if balance.Current < sum {
-		return u.Message(false, "Not enough balance points", 402)
+		return u.Message("Not enough balance points", 402)
 	}
 
 	balance.Current = balance.Current - sum
 	balance.Withdrawn = balance.Withdrawn + sum
 	GetDB().Save(balance)
 
-	resp := u.Message(true, "success", 200)
+	resp := u.Message("success", 200)
 	resp.Message = balance
 	return resp
 }

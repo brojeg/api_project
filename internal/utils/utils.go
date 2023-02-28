@@ -6,14 +6,13 @@ import (
 )
 
 type Response struct {
-	Status     bool
 	Message    interface{}
 	ServerCode int
 }
 
-func Message(status bool, message string, serverCode int) Response {
+func Message(message string, serverCode int) Response {
 
-	return Response{Status: status, Message: message, ServerCode: serverCode}
+	return Response{Message: message, ServerCode: serverCode}
 
 }
 
