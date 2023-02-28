@@ -2,7 +2,7 @@ package models
 
 import (
 	"context"
-	u "diploma/go-musthave-diploma-tpl/internal/utils"
+
 	"net/http"
 	"os"
 
@@ -36,15 +36,15 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			return []byte(os.Getenv("token_password")), nil
 		})
 		if err != nil {
-			response := u.Message("Malformed authentication token", 401)
-			u.Respond(w, response)
+			response := Message("Malformed authentication token", 401)
+			Respond(w, response)
 			return
 		}
 		if !token.Valid {
-			response := u.Message("Token is not valid.", 400)
+			response := Message("Token is not valid.", 400)
 			w.WriteHeader(http.StatusForbidden)
 			w.Header().Add("Content-Type", "application/json")
-			u.Respond(w, response)
+			Respond(w, response)
 			return
 		}
 		ctx := context.WithValue(r.Context(), ContextUserKey, tk.UserID)

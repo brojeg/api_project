@@ -1,4 +1,4 @@
-package utils
+package models
 
 import (
 	"encoding/json"
@@ -11,9 +11,7 @@ type Response struct {
 }
 
 func Message(message string, serverCode int) Response {
-
 	return Response{Message: message, ServerCode: serverCode}
-
 }
 
 func Respond(w http.ResponseWriter, data Response) {
@@ -41,7 +39,6 @@ func Respond(w http.ResponseWriter, data Response) {
 		w.WriteHeader(http.StatusInternalServerError)
 	default:
 		w.WriteHeader(http.StatusBadRequest)
-
 	}
 	json.NewEncoder(w).Encode(data.Message)
 }

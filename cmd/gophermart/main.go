@@ -13,6 +13,7 @@ func main() {
 	defer cancel()
 	config := config.Init()
 	models.InitDBConnectionString(config.Database)
+	models.InitAccrualURL(config.Accrual)
 	go controllers.ApplyAccruals(ctx, config.Interval, config.Accrual)
 	controllers.NewHTTPServer(config.ServerPort)
 

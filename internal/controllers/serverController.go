@@ -12,7 +12,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var logger *zap.SugaredLogger = log.InitLogger()
+var logger *zap.SugaredLogger = log.Init()
 
 func NewHTTPServer(port string) {
 

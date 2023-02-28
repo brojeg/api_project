@@ -1,7 +1,6 @@
 package models
 
 import (
-	u "diploma/go-musthave-diploma-tpl/internal/utils"
 	log "diploma/go-musthave-diploma-tpl/pkg/logger"
 
 	"go.uber.org/zap"
@@ -9,7 +8,7 @@ import (
 	"time"
 )
 
-var logger *zap.SugaredLogger = log.InitLogger()
+var logger *zap.SugaredLogger = log.Init()
 
 type Balance struct {
 	ID        uint    `gorm:"primarykey" json:"-"`
@@ -23,11 +22,6 @@ type BalanceHistory struct {
 	Sum         float64   `json:"sum"`
 	ProcessedAt time.Time `json:"processed_at"`
 	UserID      uint      `json:"-"`
-}
-type Accrual struct {
-	Order   string  `json:"order"`
-	Status  string  `json:"status,omitempty"`
-	Accrual float64 `json:"accrual,omitempty"`
 }
 
 func GetBalance(id uint) *Balance {
@@ -60,37 +54,37 @@ func GetBalanceHistory(user uint) []*BalanceHistory {
 	return history
 }
 
-func (balance *Balance) Add(sum float64, user uint) u.Response {
+func (balance *Balance) Add(sum float64, user uint) Response {
 	emptyBalance := Balance{UserID: user}
 	if balance == nil {
 		balance = &emptyBalance
 		balance.Current = sum + balance.Current
 		GetDB().Create(balance)
-		resp := u.Message("success", 200)
+		resp := Message("success", 200)
 		resp.Message = balance
 		return resp
 	}
 	balance.Current = sum + balance.Current
 	GetDB().Save(balance)
 
-	resp := u.Message("success", 200)
+	resp := Message("success", 200)
 	resp.Message = balance
 	return resp
 }
-func (balance *Balance) Withdraw(sum float64) u.Response {
+func (balance *Balance) Withdraw(sum float64) Response {
 
 	if balance == nil {
-		return u.Message("No active balance avalable", 402)
+		return Message("No active balance avalable", 402)
 	}
 	if balance.Current < sum {
-		return u.Message("Not enough balance points", 402)
+		return Message("Not enough balance points", 402)
 	}
 
 	balance.Current = balance.Current - sum
 	balance.Withdrawn = balance.Withdrawn + sum
 	GetDB().Save(balance)
 
-	resp := u.Message("success", 200)
+	resp := Message("success", 200)
 	resp.Message = balance
 	return resp
 }

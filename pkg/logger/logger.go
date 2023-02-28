@@ -1,8 +1,8 @@
-package logger
+package shared
 
 import "go.uber.org/zap"
 
-func InitLogger() *zap.SugaredLogger {
+func Init() *zap.SugaredLogger {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
 	return logger.Sugar()

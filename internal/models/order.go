@@ -1,7 +1,6 @@
 package models
 
 import (
-	u "diploma/go-musthave-diploma-tpl/internal/utils"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -12,43 +11,41 @@ type RawNumber struct {
 }
 
 type Order struct {
-	//gorm.Model
 	ID         uint      `gorm:"primarykey" json:"-"`
 	Number     string    `json:"number"`
 	Status     string    `json:"status"`
 	Accrual    float64   `json:"accrual"`
 	UploadedAt time.Time `json:"-"`
-	UserID     uint      `json:"-"` //The user that this contact belongs to
+	UserID     uint      `json:"-"`
 }
 
-func (order *Order) Validate() u.Response {
+func (order *Order) Validate() Response {
 
 	if order.Number == "" {
-		return u.Message("Order number should be on the payload", 500)
+		return Message("Order number should be on the payload", 500)
 	}
 
 	dbOrderExistsForUser := &Order{}
 	errorbOrderExistsForUser := GetDB().Table("orders").Where("number = ? AND user_id = ?", order.Number, order.UserID).First(dbOrderExistsForUser).Error
 	if errorbOrderExistsForUser != nil && errorbOrderExistsForUser != gorm.ErrRecordNotFound {
-		return u.Message("Connection error. Please retry", 500)
+		return Message("Connection error. Please retry", 500)
 	}
 	if dbOrderExistsForUser.Number != "" {
-		return u.Message("This order already in use by this user.", 200)
+		return Message("This order already in use by this user.", 200)
 	}
 	dbOrderExists := &Order{}
-	err := GetDB().Table("orders").Where("number = ?", order.Number).First(dbOrderExists).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return u.Message("Connection error. Please retry", 500)
+	errOrderExists := GetDB().Table("orders").Where("number = ?", order.Number).First(dbOrderExists).Error
+	if errOrderExists != nil && errOrderExists != gorm.ErrRecordNotFound {
+		return Message("Connection error. Please retry", 500)
 	}
 	if dbOrderExists.Number != "" {
-		return u.Message("Order already in use by another user.", 409)
+		return Message("Order already in use by another user.", 409)
 	}
 
-	// return u.Message("success", 200)
-	return u.Message("success", 0)
+	return Response{}
 }
 
-func (order *Order) Create() u.Response {
+func (order *Order) Create() Response {
 
 	if resp := order.Validate(); resp.ServerCode != 0 {
 		return resp
@@ -56,7 +53,7 @@ func (order *Order) Create() u.Response {
 
 	GetDB().Create(order)
 
-	resp := u.Message("success", 202)
+	resp := Message("success", 202)
 	resp.Message = order
 	return resp
 }

@@ -1,51 +1,51 @@
 package controllers
 
 import (
-	"diploma/go-musthave-diploma-tpl/internal/models"
-	u "diploma/go-musthave-diploma-tpl/internal/utils"
+	m "diploma/go-musthave-diploma-tpl/internal/models"
+
 	"encoding/json"
 	"net/http"
 	"time"
 )
 
 var WithdrawFromBalance = func(w http.ResponseWriter, r *http.Request) {
-	user, ok := models.GetUserFromContext(r.Context())
+	user, ok := m.GetUserFromContext(r.Context())
 	if !ok {
-		u.Respond(w, u.Message("Could not get user from context", 500))
+		m.Respond(w, m.Message("Could not get user from context", 500))
 	}
-	withdraw := &models.BalanceHistory{ProcessedAt: time.Now(), UserID: user}
+	withdraw := &m.BalanceHistory{ProcessedAt: time.Now(), UserID: user}
 	err := json.NewDecoder(r.Body).Decode(withdraw)
 	if err != nil {
-		u.Respond(w, u.Message("Error while decoding request body", 500))
+		m.Respond(w, m.Message("Error while decoding request body", 500))
 		return
 	}
-	currentBalance := models.GetBalance(user)
+	currentBalance := m.GetBalance(user)
 	resp := currentBalance.Withdraw(withdraw.Sum)
 	withdraw.Save()
-	u.Respond(w, resp)
+	m.Respond(w, resp)
 
 }
 
 var GetBalancHistoryFor = func(w http.ResponseWriter, r *http.Request) {
-	resp := u.Response{}
-	user, ok := models.GetUserFromContext(r.Context())
+	resp := m.Response{}
+	user, ok := m.GetUserFromContext(r.Context())
 	if !ok {
-		u.Respond(w, u.Message("Could not get user from context", 500))
+		m.Respond(w, m.Message("Could not get user from context", 500))
 	}
-	data := models.GetBalanceHistory(user)
-	resp = u.Message("success", 200)
+	data := m.GetBalanceHistory(user)
+	resp = m.Message("success", 200)
 	resp.Message = data
-	u.Respond(w, resp)
+	m.Respond(w, resp)
 }
 
 var GetBalanceFor = func(w http.ResponseWriter, r *http.Request) {
-	resp := u.Response{}
-	user, ok := models.GetUserFromContext(r.Context())
+	resp := m.Response{}
+	user, ok := m.GetUserFromContext(r.Context())
 	if !ok {
-		u.Respond(w, u.Message("Could not get user from context", 500))
+		m.Respond(w, m.Message("Could not get user from context", 500))
 	}
-	data := models.GetBalance(user)
-	resp = u.Message("success", 200)
+	data := m.GetBalance(user)
+	resp = m.Message("success", 200)
 	resp.Message = data
-	u.Respond(w, resp)
+	m.Respond(w, resp)
 }

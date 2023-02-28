@@ -1,8 +1,7 @@
-package utils
+package shared
 
 import (
 	"errors"
-	"io"
 )
 
 const (
@@ -47,29 +46,4 @@ func calculateLuhnSum(number string, parity int) (int64, error) {
 	}
 
 	return sum, nil
-}
-
-// func StringToIntSlice(n int64) []int64 {
-// 	var ret []int64
-// 	// i, err := strconv.ParseInt(n, 10, 64)
-// 	// if err != nil {
-// 	// 	panic(err)
-// 	// }
-// 	for n != 0 {
-// 		ret = append(ret, n%10)
-// 		n /= 10
-// 	}
-
-// 	reverseInt(ret)
-
-// 	return ret
-// }
-
-func GetRawOrderNumber(body io.Reader) (string, error) {
-	b, err := io.ReadAll(body)
-	if err != nil {
-		return "", err
-	}
-
-	return string(b), nil
 }
