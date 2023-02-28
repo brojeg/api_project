@@ -48,10 +48,10 @@ func (account *Account) Validate() u.Response {
 	return u.Message(true, "Requirement passed", 200)
 }
 
-func (account *Account) Create() (u.Response, string) {
+func (account *Account) Create() (u.Response, string, uint) {
 
 	if resp := account.Validate(); !resp.Status {
-		return resp, ""
+		return resp, "", 0
 	}
 
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(account.Password), bcrypt.DefaultCost)
@@ -60,7 +60,7 @@ func (account *Account) Create() (u.Response, string) {
 	GetDB().Create(account)
 
 	if account.ID <= 0 {
-		return u.Message(false, "Failed to create account, connection error.", 501), ""
+		return u.Message(false, "Failed to create account, connection error.", 501), "", 0
 	}
 
 	//Create new JWT token for the newly registered account
@@ -76,7 +76,7 @@ func (account *Account) Create() (u.Response, string) {
 
 	response := u.Message(true, "Account has been created", 200)
 	response.Message = account
-	return response, account.Token
+	return response, account.Token, account.ID
 }
 
 func Login(email, password string) u.Response {

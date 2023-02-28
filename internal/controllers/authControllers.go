@@ -10,6 +10,7 @@ import (
 var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 
 	account := &models.Account{}
+
 	err := json.NewDecoder(r.Body).Decode(account) //decode the request body into struct and failed if any error occur
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -17,7 +18,9 @@ var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, token := account.Create() //Create account
+	resp, token, id := account.Create() //Create account
+	balance := &models.Balance{UserID: id}
+	balance.Save()
 	w.Header().Add("Authorization", token)
 	u.Respond(w, resp)
 }
