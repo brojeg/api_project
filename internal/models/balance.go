@@ -55,15 +55,15 @@ func GetBalanceHistory(user uint) []*BalanceHistory {
 }
 
 func (balance *Balance) Add(sum float64, user uint) Response {
-	emptyBalance := Balance{UserID: user}
-	if balance == nil {
-		balance = &emptyBalance
-		balance.Current = sum + balance.Current
-		GetDB().Create(balance)
-		resp := Message("success", 200)
-		resp.Message = balance
-		return resp
-	}
+	// emptyBalance := Balance{UserID: user}
+	// if balance == nil {
+	// 	balance = &emptyBalance
+	// 	balance.Current = sum + balance.Current
+	// 	GetDB().Create(balance)
+	// 	resp := Message("success", 200)
+	// 	resp.Message = balance
+	// 	return resp
+	// }
 	balance.Current = sum + balance.Current
 	GetDB().Save(balance)
 

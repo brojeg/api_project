@@ -51,18 +51,9 @@ func (account *Account) Create() Response {
 	if account.ID <= 0 {
 		return Message("Failed to create account, connection error.", 501)
 	}
-	// tk := &Token{UserID: account.ID}
-	// token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
-	// tokenString, err := token.SignedString([]byte(os.Getenv("token_password")))
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// account.Token = tokenString
-	// account.Password = ""
 	tokenString := account.passwordHash()
 	account.Token = tokenString
-	response := Response{Message: account, ServerCode: 200}
-	return response
+	return Response{Message: account, ServerCode: 200}
 }
 
 func Login(email, password string) Response {
@@ -78,14 +69,8 @@ func Login(email, password string) Response {
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
 		return Message("Invalid login credentials. Please try again", 401)
 	}
-	// account.Password = ""
-	// tk := &Token{UserID: account.ID}
-	// token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
-	// tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	tokenString := account.passwordHash()
-	resp := Response{ServerCode: 200, Message: tokenString}
-
-	return resp
+	return Response{ServerCode: 200, Message: tokenString}
 }
 
 func (account *Account) passwordHash() string {
