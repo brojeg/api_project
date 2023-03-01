@@ -16,6 +16,8 @@ type ServerConfig struct {
 	Accrual    string `env:"ACCRUAL_SYSTEM_ADDRESS"`
 }
 
+var accrualURL string
+
 func Init() ServerConfig {
 	var envCfg ServerConfig
 	err := env.Parse(&envCfg)

@@ -23,6 +23,9 @@ type Account struct {
 
 func (account *Account) Validate() Response {
 
+	if len(account.Login) < 6 {
+		return Message("Login is not valid", 400)
+	}
 	if len(account.Password) < 6 {
 		return Message("Password is required", 400)
 	}
@@ -81,15 +84,3 @@ func Login(email, password string) Response {
 
 	return resp
 }
-
-// func GetUser(u uint) *Account {
-
-// 	acc := &Account{}
-// 	GetDB().Table("accounts").Where("id = ?", u).First(acc)
-// 	if acc.Login == "" {
-// 		return nil
-// 	}
-
-// 	acc.Password = ""
-// 	return acc
-// }
