@@ -1,14 +1,8 @@
 package models
 
 import (
-	log "diploma/go-musthave-diploma-tpl/pkg/logger"
-
-	"go.uber.org/zap"
-
 	"time"
 )
-
-var logger *zap.SugaredLogger = log.Init()
 
 type Balance struct {
 	ID        uint    `gorm:"primarykey" json:"-"`
@@ -45,7 +39,7 @@ func (balance *Balance) Save() {
 func GetBalanceHistory(user uint) []*BalanceHistory {
 
 	history := make([]*BalanceHistory, 0)
-	err := GetDB().Table("balance_histories").Where("user_id = ?", user).Order("processed_at	DESC").Find(&history).Error
+	err := GetDB().Table("balance_histories").Where("user_id = ?", user).Order("processed_at DESC").Find(&history).Error
 	if err != nil {
 		logger.Error(err)
 		return nil
@@ -55,18 +49,8 @@ func GetBalanceHistory(user uint) []*BalanceHistory {
 }
 
 func (balance *Balance) Add(sum float64, user uint) Response {
-	// emptyBalance := Balance{UserID: user}
-	// if balance == nil {
-	// 	balance = &emptyBalance
-	// 	balance.Current = sum + balance.Current
-	// 	GetDB().Create(balance)
-	// 	resp := Message("success", 200)
-	// 	resp.Message = balance
-	// 	return resp
-	// }
 	balance.Current = sum + balance.Current
 	GetDB().Save(balance)
-
 	resp := Message("success", 200)
 	resp.Message = balance
 	return resp
