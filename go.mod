@@ -3,6 +3,7 @@ module diploma/go-musthave-diploma-tpl
 go 1.19
 
 require (
+	github.com/Rhymond/go-money v1.0.9
 	github.com/caarlos0/env/v6 v6.10.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gorilla/mux v1.8.0
@@ -13,7 +14,6 @@ require (
 )
 
 require (
-	github.com/Rhymond/go-money v1.0.9 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/lib/pq v1.1.1 // indirect
 	go.uber.org/atomic v1.7.0 // indirect

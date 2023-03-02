@@ -20,6 +20,7 @@ func InitAccrualURL(config string) {
 func (order *Order) ApplyAccrual() {
 	var balance *Balance
 	var accrualForOrder *Accrual
+	// order := models.GetOrderByNumber(order.Number)
 	if order != nil {
 		balance = GetBalance(order.UserID)
 		accrualForOrder = RequestAccrual(accrualURL, order.Number)

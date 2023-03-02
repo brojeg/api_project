@@ -5,17 +5,17 @@ import (
 )
 
 type Balance struct {
-	ID        uint        `gorm:"primarykey" json:"-"`
-	Current   money.Money `json:"current"`
-	Withdrawn money.Money `json:"withdrawn"`
-	UserID    uint        `json:"-"`
+	ID        uint    `gorm:"primarykey" json:"-"`
+	Current   float64 `json:"current"`
+	Withdrawn float64 `json:"withdrawn"`
+	UserID    uint    `json:"-"`
 }
 
 type BalanceHistory struct {
-	Order       string      `json:"order"`
-	Sum         money.Money `json:"sum"`
-	ProcessedAt time.Time   `json:"processed_at"`
-	UserID      uint        `json:"-"`
+	Order       string    `json:"order"`
+	Sum         float64   `json:"sum"`
+	ProcessedAt time.Time `json:"processed_at"`
+	UserID      uint      `json:"-"`
 }
 
 func GetBalance(id uint) *Balance {
