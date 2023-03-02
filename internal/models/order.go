@@ -3,6 +3,7 @@ package models
 import (
 	"time"
 
+	"github.com/Rhymond/go-money"
 	"github.com/jinzhu/gorm"
 )
 
@@ -11,12 +12,12 @@ type RawNumber struct {
 }
 
 type Order struct {
-	ID         uint      `gorm:"primarykey" json:"-"`
-	Number     string    `json:"number"`
-	Status     string    `json:"status"`
-	Accrual    float64   `json:"accrual"`
-	UploadedAt time.Time `json:"-"`
-	UserID     uint      `json:"-"`
+	ID         uint        `gorm:"primarykey" json:"-"`
+	Number     string      `json:"number"`
+	Status     string      `json:"status"`
+	Accrual    money.Money `json:"accrual"`
+	UploadedAt time.Time   `json:"-"`
+	UserID     uint        `json:"-"`
 }
 
 func (order *Order) Validate() Response {
@@ -58,7 +59,7 @@ func (order *Order) Create() Response {
 	return resp
 }
 
-func GetOrder(id uint) *Order {
+func GetOrderByUser(id uint) *Order {
 
 	order := &Order{}
 	err := GetDB().Table("orders").Where("id = ?", id).First(order).Error
@@ -102,7 +103,5 @@ func GetOrdersToApplyAccrual(status string) []*Order {
 }
 
 func (order *Order) Save() {
-
 	GetDB().Save(order)
-
 }
