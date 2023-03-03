@@ -32,7 +32,7 @@ var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 
 }
 
-var GetOrdersFor = func(w http.ResponseWriter, r *http.Request) {
+var GetOrders = func(w http.ResponseWriter, r *http.Request) {
 
 	resp := server.Response{}
 	user, ok := auth.GetUserFromContext(r.Context())

@@ -29,7 +29,7 @@ var WithdrawFromBalance = func(w http.ResponseWriter, r *http.Request) {
 
 }
 
-var GetBalancHistoryFor = func(w http.ResponseWriter, r *http.Request) {
+var GetBalancHistory = func(w http.ResponseWriter, r *http.Request) {
 	resp := server.Response{}
 	user, ok := auth.GetUserFromContext(r.Context())
 	if !ok {
@@ -41,7 +41,7 @@ var GetBalancHistoryFor = func(w http.ResponseWriter, r *http.Request) {
 	server.Respond(w, resp)
 }
 
-var GetBalanceFor = func(w http.ResponseWriter, r *http.Request) {
+var GetBalance = func(w http.ResponseWriter, r *http.Request) {
 	resp := server.Response{}
 	user, ok := auth.GetUserFromContext(r.Context())
 	if !ok {

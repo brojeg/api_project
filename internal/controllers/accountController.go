@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
+var CreateAccountWithBalance = func(w http.ResponseWriter, r *http.Request) {
 	account := &account.Account{}
 	err := json.NewDecoder(r.Body).Decode(account)
 	if err != nil {
@@ -17,7 +17,6 @@ var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	resp := account.Create()
-	// account = resp.Message(*account)
 	balance := &balance.Balance{UserID: account.ID}
 	balance.Save()
 	w.Header().Add("Authorization", account.Token)

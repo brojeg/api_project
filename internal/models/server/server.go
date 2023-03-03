@@ -1,14 +1,9 @@
 package models
 
 import (
-	log "diploma/go-musthave-diploma-tpl/pkg/logger"
 	"encoding/json"
 	"net/http"
-
-	"go.uber.org/zap"
 )
-
-var logger *zap.SugaredLogger = log.Init()
 
 type Response struct {
 	Message    interface{}

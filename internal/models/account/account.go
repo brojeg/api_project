@@ -24,6 +24,13 @@ type Account struct {
 	Token    string `json:"token" sql:"-"`
 }
 
+type iAccount interface {
+	Validate() server.Response
+	Create() server.Response
+	Login(email, password string) server.Response
+	passwordHash() string
+}
+
 func CreteTable() {
 	db.Get().AutoMigrate(&Account{})
 }
