@@ -11,19 +11,19 @@ import (
 )
 
 type ServerConfig struct {
-	ServerPort string `env:"ADDRESS" envDefault:"127.0.0.1:8080"`
+	ServerPort string `env:"RUN_ADDRESS" envDefault:"127.0.0.1:8080"`
 	Interval   string `env:"INTERVAL" envDefault:"5s"`
-	Database   string `env:"DATABASE_DSN"`
+	Database   string `env:"DATABASE_URI"`
 	Accrual    string `env:"ACCRUAL_SYSTEM_ADDRESS"`
 }
 
 func Init() ServerConfig {
 	var envCfg ServerConfig
 	err := env.Parse(&envCfg)
-	fmt.Println(envCfg)
-	_, envAdddressExists := os.LookupEnv("ADDRESS")
-	_, envDBExists := os.LookupEnv("DATABASE_DSN")
-	_, envAccrualExists := os.LookupEnv("DATABASE_DSN")
+
+	_, envAdddressExists := os.LookupEnv("RUN_ADDRESS")
+	_, envDBExists := os.LookupEnv("DATABASE_URI")
+	_, envAccrualExists := os.LookupEnv("ACCRUAL_SYSTEM_ADDRESS")
 	if err != nil {
 		log.Fatalf("unable to parse ennvironment variables: %e", err)
 	}
@@ -55,6 +55,6 @@ func Init() ServerConfig {
 
 	models.InitDBConnectionString(envCfg.Database)
 	models.InitAccrualURL(envCfg.Accrual)
-	fmt.Println(envCfg)
+
 	return envCfg
 }
