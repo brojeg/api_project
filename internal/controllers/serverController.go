@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"diploma/go-musthave-diploma-tpl/internal/models"
+	auth "diploma/go-musthave-diploma-tpl/internal/models/auth"
+	server "diploma/go-musthave-diploma-tpl/internal/models/server"
 	log "diploma/go-musthave-diploma-tpl/pkg/logger"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"go.uber.org/zap"
@@ -19,9 +19,9 @@ func NewHTTPServer(port string) {
 	router := NewRouter()
 
 	if err := http.ListenAndServe(port, router); err != nil && !errors.Is(err, http.ErrServerClosed) {
-		fmt.Printf("Cannot start http.ListenAndServe. Error is: /n %e", err)
+		logger.Errorf("Cannot start http.ListenAndServe. Error is: /n %e", err)
 	} else {
-		fmt.Printf("application stopped gracefully")
+		logger.Warn("application stopped gracefully")
 	}
 
 }
@@ -36,8 +36,8 @@ func NewRouter() *mux.Router {
 	router.HandleFunc("/api/user/balance", GetBalanceFor).Methods("GET")
 	router.HandleFunc("/api/user/balance/withdraw", WithdrawFromBalance).Methods("POST")
 	router.HandleFunc("/api/user/withdrawals", GetBalancHistoryFor).Methods("GET")
-	router.Use(models.LimitMiddleware)
-	router.Use(models.JwtAuthentication)
+	router.Use(server.LimitMiddleware)
+	router.Use(auth.JwtAuthentication)
 
 	return router
 

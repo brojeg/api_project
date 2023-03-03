@@ -2,7 +2,8 @@ package controllers
 
 import (
 	"context"
-	"diploma/go-musthave-diploma-tpl/internal/models"
+	order "diploma/go-musthave-diploma-tpl/internal/models/order"
+
 	"time"
 )
 
@@ -17,7 +18,7 @@ func ApplyAccruals(ctx context.Context, interval, accrualURL string) {
 
 		select {
 		case <-ticker.C:
-			ordersToProcess := models.GetOrdersToApplyAccrual("NEW")
+			ordersToProcess := order.GetOrdersToApplyAccrual("NEW")
 			for _, order := range ordersToProcess {
 				order.ApplyAccrual()
 			}

@@ -1,11 +1,14 @@
 package models
 
 import (
+	log "diploma/go-musthave-diploma-tpl/pkg/logger"
 	"encoding/json"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
-var accrualURL string
+var logger *zap.SugaredLogger = log.Init()
 
 type Accrual struct {
 	Order   string  `json:"order"`
@@ -13,26 +16,6 @@ type Accrual struct {
 	Accrual float64 `json:"accrual,omitempty"`
 }
 
-func InitAccrualURL(config string) {
-	accrualURL = config
-}
-
-func (order *Order) ApplyAccrual() {
-	var balance *Balance
-	var accrualForOrder *Accrual
-	// order := models.GetOrderByNumber(order.Number)
-	if order != nil {
-		balance = GetBalance(order.UserID)
-		accrualForOrder = RequestAccrual(accrualURL, order.Number)
-	}
-	if accrualForOrder != nil {
-		order.Accrual = accrualForOrder.Accrual
-		order.Status = accrualForOrder.Status
-		balance.Add(order.Accrual, order.UserID)
-		order.Save()
-		balance.Save()
-	}
-}
 func RequestAccrual(endpont, orderid string) *Accrual {
 	accrual := &Accrual{}
 	URL := endpont + "/api/orders/" + orderid

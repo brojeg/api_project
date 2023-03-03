@@ -1,9 +1,12 @@
 package config
 
 import (
-	"diploma/go-musthave-diploma-tpl/internal/models"
+	account "diploma/go-musthave-diploma-tpl/internal/models/account"
+	balance "diploma/go-musthave-diploma-tpl/internal/models/balance"
+	balanceHistory "diploma/go-musthave-diploma-tpl/internal/models/balanceHistory"
+	db "diploma/go-musthave-diploma-tpl/internal/models/database"
+	order "diploma/go-musthave-diploma-tpl/internal/models/order"
 	"flag"
-	"fmt"
 	"log"
 	"os"
 
@@ -36,11 +39,10 @@ func Init() ServerConfig {
 	})
 	flag.Func("d", "Posgres connection string (No default value)", func(flagValue string) error {
 		if envDBExists {
-			fmt.Println("env value for server exists")
 			return nil
 		}
 		envCfg.Database = flagValue
-		fmt.Println("Unsing Flag value for server")
+
 		return nil
 	})
 	flag.Func("r", "ACCRUAL SYSTEM ADDRESS (No default value)", func(flagValue string) error {
@@ -53,8 +55,11 @@ func Init() ServerConfig {
 	})
 	flag.Parse()
 
-	models.InitDBConnectionString(envCfg.Database)
-	models.InitAccrualURL(envCfg.Accrual)
+	db.InitDBConnectionString(envCfg.Database)
+	order.InitAccrualURL(envCfg.Accrual)
+	account.CreteTable()
+	balance.CreteTable()
+	balanceHistory.CreteTable()
 
 	return envCfg
 }

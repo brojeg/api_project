@@ -6,6 +6,9 @@ import (
 	"net/http"
 	"os"
 
+	account "diploma/go-musthave-diploma-tpl/internal/models/account"
+	server "diploma/go-musthave-diploma-tpl/internal/models/server"
+
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -31,20 +34,20 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			}
 		}
 		tokenHeader := r.Header.Get("Authorization")
-		tk := &Token{}
+		tk := &account.Token{}
 		token, err := jwt.ParseWithClaims(tokenHeader, tk, func(token *jwt.Token) (interface{}, error) {
 			return []byte(os.Getenv("token_password")), nil
 		})
 		if err != nil {
-			response := Message("Malformed authentication token", 401)
-			Respond(w, response)
+			response := server.Message("Malformed authentication token", 401)
+			server.Respond(w, response)
 			return
 		}
 		if !token.Valid {
-			response := Message("Token is not valid.", 400)
+			response := server.Message("Token is not valid.", 400)
 			w.WriteHeader(http.StatusForbidden)
 			w.Header().Add("Content-Type", "application/json")
-			Respond(w, response)
+			server.Respond(w, response)
 			return
 		}
 		ctx := context.WithValue(r.Context(), ContextUserKey, tk.UserID)
