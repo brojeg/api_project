@@ -57,6 +57,7 @@ func Init() ServerConfig {
 
 	db.InitDBConnectionString(envCfg.Database)
 	order.InitAccrualURL(envCfg.Accrual)
+	order.CreteTable()
 	account.CreteTable()
 	balance.CreteTable()
 	balanceHistory.CreteTable()
