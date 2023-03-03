@@ -37,7 +37,7 @@ func CreteTable() {
 
 func (account *Account) Validate() server.Response {
 
-	if len(account.Login) < 6 {
+	if len(account.Login) < 3 {
 		return server.Message("Login is not valid", 400)
 	}
 	if len(account.Password) < 6 {
