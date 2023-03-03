@@ -1,34 +1,35 @@
 package controllers
 
 import (
-	"diploma/go-musthave-diploma-tpl/internal/models"
-	u "diploma/go-musthave-diploma-tpl/internal/utils"
+	mod "diploma/go-musthave-diploma-tpl/internal/models"
 	"encoding/json"
 	"net/http"
 )
 
 var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
-
-	account := &models.Account{}
-	err := json.NewDecoder(r.Body).Decode(account) //decode the request body into struct and failed if any error occur
+	account := &mod.Account{}
+	err := json.NewDecoder(r.Body).Decode(account)
 	if err != nil {
-		u.Respond(w, u.Message(false, "Invalid request"))
+		w.WriteHeader(http.StatusBadRequest)
+		mod.Respond(w, mod.Message("Invalid request", 400))
 		return
 	}
-
-	resp := account.Create() //Create account
-	u.Respond(w, resp)
+	resp := account.Create()
+	account = resp.Message.(*mod.Account)
+	balance := &mod.Balance{UserID: account.ID}
+	balance.Save()
+	w.Header().Add("Authorization", account.Token)
+	mod.Respond(w, resp)
 }
 
 var Authenticate = func(w http.ResponseWriter, r *http.Request) {
-
-	account := &models.Account{}
-	err := json.NewDecoder(r.Body).Decode(account) //decode the request body into struct and failed if any error occur
-	if err != nil {
-		u.Respond(w, u.Message(false, "Invalid request"))
+	account := &mod.Account{}
+	err := json.NewDecoder(r.Body).Decode(account)
+	if err != nil || account.Login == "" || account.Password == "" {
+		mod.Respond(w, mod.Message("Invalid request", 400))
 		return
 	}
-
-	resp := models.Login(account.Email, account.Password)
-	u.Respond(w, resp)
+	resp := mod.Login(account.Login, account.Password)
+	w.Header().Add("Authorization", resp.Message.(string))
+	mod.Respond(w, resp)
 }
