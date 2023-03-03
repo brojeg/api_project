@@ -20,7 +20,7 @@ type ServerConfig struct {
 func Init() ServerConfig {
 	var envCfg ServerConfig
 	err := env.Parse(&envCfg)
-	fmt.Println(envCfg)
+
 	_, envAdddressExists := os.LookupEnv("RUN_ADDRESS")
 	_, envDBExists := os.LookupEnv("DATABASE_URI")
 	_, envAccrualExists := os.LookupEnv("ACCRUAL_SYSTEM_ADDRESS")
@@ -55,6 +55,6 @@ func Init() ServerConfig {
 
 	models.InitDBConnectionString(envCfg.Database)
 	models.InitAccrualURL(envCfg.Accrual)
-	fmt.Println(envCfg)
+
 	return envCfg
 }
