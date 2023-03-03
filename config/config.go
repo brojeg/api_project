@@ -3,6 +3,7 @@ package config
 import (
 	"diploma/go-musthave-diploma-tpl/internal/models"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 
@@ -12,13 +13,14 @@ import (
 type ServerConfig struct {
 	ServerPort string `env:"ADDRESS" envDefault:"127.0.0.1:8080"`
 	Interval   string `env:"INTERVAL" envDefault:"5s"`
-	Database   string `env:"DATABASE_DSN" envDefault:"postgresql://postgres:postgres@postgres/praktikum?sslmode=disable"`
+	Database   string `env:"DATABASE_DSN"`
 	Accrual    string `env:"ACCRUAL_SYSTEM_ADDRESS"`
 }
 
 func Init() ServerConfig {
 	var envCfg ServerConfig
 	err := env.Parse(&envCfg)
+	fmt.Println(envCfg)
 	_, envAdddressExists := os.LookupEnv("ADDRESS")
 	_, envDBExists := os.LookupEnv("DATABASE_DSN")
 	_, envAccrualExists := os.LookupEnv("DATABASE_DSN")
@@ -34,13 +36,16 @@ func Init() ServerConfig {
 	})
 	flag.Func("d", "Posgres connection string (No default value)", func(flagValue string) error {
 		if envDBExists {
+			fmt.Println("env value for server exists")
 			return nil
 		}
 		envCfg.Database = flagValue
+		fmt.Println("Unsing Flag value for server")
 		return nil
 	})
 	flag.Func("r", "ACCRUAL SYSTEM ADDRESS (No default value)", func(flagValue string) error {
 		if envAccrualExists {
+
 			return nil
 		}
 		envCfg.Accrual = flagValue
@@ -50,6 +55,6 @@ func Init() ServerConfig {
 
 	models.InitDBConnectionString(envCfg.Database)
 	models.InitAccrualURL(envCfg.Accrual)
-
+	fmt.Println(envCfg)
 	return envCfg
 }
