@@ -33,14 +33,14 @@ type Order struct {
 func InitAccrualURL(config string) {
 	accrualURL = config
 }
-func (order *Order) Validate() server.Response {
+func (newOrder *Order) Validate() server.Response {
 
-	if order.Number == "" {
+	if newOrder.Number == "" {
 		return server.Message("Order number should be on the payload", 500)
 	}
 
 	dbOrderExistsForUser := &Order{}
-	errorbOrderExistsForUser := db.Get().Table("orders").Where("number = ? AND user_id = ?", order.Number, order.UserID).First(dbOrderExistsForUser).Error
+	errorbOrderExistsForUser := db.Get().Table("orders").Where("number = ? AND user_id = ?", newOrder.Number, newOrder.UserID).First(dbOrderExistsForUser).Error
 	if errorbOrderExistsForUser != nil && errorbOrderExistsForUser != gorm.ErrRecordNotFound {
 		return server.Message("Connection error. Please retry", 500)
 	}
@@ -48,7 +48,7 @@ func (order *Order) Validate() server.Response {
 		return server.Message("This order already in use by this user.", 200)
 	}
 	dbOrderExists := &Order{}
-	errOrderExists := db.Get().Table("orders").Where("number = ?", order.Number).First(dbOrderExists).Error
+	errOrderExists := db.Get().Table("orders").Where("number = ?", newOrder.Number).First(dbOrderExists).Error
 	if errOrderExists != nil && errOrderExists != gorm.ErrRecordNotFound {
 		return server.Message("Connection error. Please retry", 500)
 	}
@@ -59,22 +59,21 @@ func (order *Order) Validate() server.Response {
 	return server.Response{}
 }
 
-func (order *Order) Create() server.Response {
+func (newOrder *Order) Create() server.Response {
 
-	if resp := order.Validate(); resp.ServerCode != 0 {
+	if resp := newOrder.Validate(); resp.ServerCode != 0 {
 		return resp
 	}
 
-	db.Get().Create(order)
+	db.Get().Create(newOrder)
 
 	resp := server.Message("success", 202)
-	resp.Message = order
+	resp.Message = newOrder
 	return resp
 }
 func (newOrder *Order) ApplyAccrual() {
 	var currentBalance *balance.Balance
 	var accrualForOrder *accrual.Accrual
-	// order := models.GetOrderByNumber(order.Number)
 	if newOrder != nil {
 		currentBalance = balance.Get(newOrder.UserID)
 		accrualForOrder = accrual.RequestAccrual(accrualURL, newOrder.Number)
@@ -131,6 +130,6 @@ func GetOrdersToApplyAccrual(status string) []*Order {
 	return orders
 }
 
-func (order *Order) Save() {
-	db.Get().Save(order)
+func (newOrder *Order) Save() {
+	db.Get().Save(newOrder)
 }
