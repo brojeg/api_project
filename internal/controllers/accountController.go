@@ -12,13 +12,11 @@ var CreateAccountWithBalance = func(w http.ResponseWriter, r *http.Request) {
 	account := &account.Account{}
 	err := json.NewDecoder(r.Body).Decode(account)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
 		server.Respond(w, server.Message("Invalid request", 400))
 		return
 	}
 	resp := account.Create()
-	balance := &balance.Balance{UserID: account.ID}
-	balance.Save()
+	balance.Create(account.ID)
 	w.Header().Add("Authorization", account.Token)
 	server.Respond(w, resp)
 }

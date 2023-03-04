@@ -46,7 +46,6 @@ func (account *Account) Validate() server.Response {
 }
 
 func (account *Account) Create() server.Response {
-
 	if resp := account.Validate(); resp.ServerCode != 200 {
 		return resp
 	}

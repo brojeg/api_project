@@ -38,8 +38,8 @@ var GetBalancHistory = func(w http.ResponseWriter, r *http.Request) {
 		server.Respond(w, server.Message("Could not get user from context", 500))
 	}
 	data := balanceHistory.GetBalanceHistory(user)
-	resp = server.Message("success", 200)
 	resp.Message = data
+	resp.ServerCode = 200
 	server.Respond(w, resp)
 }
 
@@ -50,7 +50,7 @@ var GetBalance = func(w http.ResponseWriter, r *http.Request) {
 		server.Respond(w, server.Message("Could not get user from context", 500))
 	}
 	data := balance.Get(user)
-	resp = server.Message("success", 200)
+	resp.ServerCode = 200
 	resp.Message = data
 	server.Respond(w, resp)
 }

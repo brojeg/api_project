@@ -15,8 +15,13 @@ type Balance struct {
 func CreteTable() {
 	db.Get().AutoMigrate(&Balance{})
 }
-func Get(id uint) *Balance {
 
+func Create(id uint) {
+	balance := &Balance{UserID: id}
+	balance.Save()
+}
+
+func Get(id uint) *Balance {
 	balance := &Balance{}
 	err := db.Get().Table("balances").Where("user_id = ?", id).First(balance).Error
 	if err != nil {
