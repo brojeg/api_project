@@ -63,15 +63,11 @@ func (newOrder *Order) Validate() server.Response {
 }
 
 func (newOrder *Order) Create() server.Response {
-
 	if resp := newOrder.Validate(); resp.ServerCode != 0 {
 		return resp
 	}
-
 	db.Get().Create(newOrder)
-
 	resp := server.Response{Message: newOrder, ServerCode: 200}
-
 	return resp
 }
 func (newOrder *Order) ApplyAccrual() {

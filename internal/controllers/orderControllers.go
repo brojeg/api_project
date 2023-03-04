@@ -15,7 +15,6 @@ import (
 var CreateOrder = func(w http.ResponseWriter, r *http.Request) {
 	user, ok := auth.GetUserFromContext(r.Context())
 	if !ok {
-		logger.Error("Could not get user from context")
 		server.Respond(w, server.Message("Could not get user from context", 500))
 	}
 	rawOrderNumber, errNumber := getRawOrderNumber(r.Body)
