@@ -27,6 +27,7 @@ func Init() ServerConfig {
 	_, envAdddressExists := os.LookupEnv("RUN_ADDRESS")
 	_, envDBExists := os.LookupEnv("DATABASE_URI")
 	_, envAccrualExists := os.LookupEnv("ACCRUAL_SYSTEM_ADDRESS")
+	_, envIntervalExists := os.LookupEnv("Interval")
 	if err != nil {
 		log.Fatalf("unable to parse ennvironment variables: %e", err)
 	}
@@ -47,10 +48,16 @@ func Init() ServerConfig {
 	})
 	flag.Func("r", "ACCRUAL SYSTEM ADDRESS (No default value)", func(flagValue string) error {
 		if envAccrualExists {
-
 			return nil
 		}
 		envCfg.Accrual = flagValue
+		return nil
+	})
+	flag.Func("i", "Interval for the accrual system check (default 5s)", func(flagValue string) error {
+		if envIntervalExists {
+			return nil
+		}
+		envCfg.Interval = flagValue
 		return nil
 	})
 	flag.Parse()

@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/caarlos0/env/v6 v6.10.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/golang/mock v1.6.0
+	github.com/felixge/httpsnoop v1.0.3
 	github.com/gorilla/mux v1.8.0
 	github.com/jinzhu/gorm v1.9.16
 	go.uber.org/zap v1.24.0

@@ -62,7 +62,7 @@ func (account *Account) Create() server.Response {
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(account.Password), bcrypt.DefaultCost)
 	account.Password = string(hashedPassword)
 	db.Get().Create(account)
-	if account.ID <= 0 {
+	if account.ID == 0 {
 		return server.Message("Failed to create account, connection error.", 501)
 	}
 	tokenString := account.passwordHash()
