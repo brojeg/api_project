@@ -1,6 +1,7 @@
 package model
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -10,28 +11,32 @@ import (
 )
 
 type HTTPReqInfo struct {
-	method    string
-	uri       string
-	ipaddr    string
-	code      int
-	duration  time.Duration
-	userAgent string
+	Method    string        `json:"method"`
+	URI       string        `json:"uri"`
+	IPAddr    string        `json:"ipaddr"`
+	Code      int           `json:"code"`
+	Duration  time.Duration `json:"duration"`
+	UserAgent string        `json:"user_agent"`
 }
 
 var HTTPLogger = func(h http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		ri := &HTTPReqInfo{
-			method:    r.Method,
-			uri:       r.URL.String(),
-			userAgent: r.Header.Get("User-Agent"),
+		requestInfo := &HTTPReqInfo{
+			Method:    r.Method,
+			URI:       r.URL.String(),
+			UserAgent: r.Header.Get("User-Agent"),
 		}
 
-		ri.ipaddr = requestGetRemoteAddress(r)
+		requestInfo.IPAddr = requestGetRemoteAddress(r)
 		m := httpsnoop.CaptureMetrics(h, w, r)
 
-		ri.code = m.Code
-		ri.duration = m.Duration
-		fmt.Println(ri) //TODO create a better representation
+		requestInfo.Code = m.Code
+		requestInfo.Duration = m.Duration
+		data, err := json.Marshal(requestInfo)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(string(data)) //TODO create a better representation
 	}
 	return http.HandlerFunc(fn)
 }
