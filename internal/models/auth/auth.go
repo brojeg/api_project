@@ -4,12 +4,11 @@ import (
 	"context"
 
 	"net/http"
-	"os"
 
-	account "diploma/go-musthave-diploma-tpl/internal/models/account"
 	server "diploma/go-musthave-diploma-tpl/internal/models/server"
 
 	"github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type contextKey string
@@ -17,6 +16,16 @@ type contextKey string
 var (
 	ContextUserKey = contextKey("user")
 )
+var jwtPassword string
+
+func InitJWTPassword(pass string) {
+	jwtPassword = pass
+}
+
+type Token struct {
+	UserID uint
+	jwt.StandardClaims
+}
 
 func GetUserFromContext(ctx context.Context) (uint, bool) {
 	caller, ok := ctx.Value(ContextUserKey).(uint)
@@ -34,9 +43,10 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			}
 		}
 		tokenHeader := r.Header.Get("Authorization")
-		tk := &account.Token{}
+		tk := &Token{}
 		token, err := jwt.ParseWithClaims(tokenHeader, tk, func(token *jwt.Token) (interface{}, error) {
-			return []byte(os.Getenv("token_password")), nil
+			// return []byte(os.Getenv("token_password")), nil
+			return []byte(jwtPassword), nil
 		})
 		if err != nil {
 			response := server.Message("Malformed authentication token", 401)
@@ -54,4 +64,28 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})
+}
+
+func GetToken(id uint) string {
+	tk := &Token{UserID: id}
+	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
+	tokenString, err := token.SignedString([]byte(jwtPassword))
+	if err != nil {
+		panic(err)
+	}
+
+	return tokenString
+}
+
+func EncryptPassword(pass string) string {
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
+	return string(hashedPassword)
+}
+
+func IsPasswordsEqual(existing, new string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(existing), []byte(new))
+	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+		return false
+	}
+	return true
 }

@@ -2,6 +2,7 @@ package config
 
 import (
 	account "diploma/go-musthave-diploma-tpl/internal/models/account"
+	auth "diploma/go-musthave-diploma-tpl/internal/models/auth"
 	balance "diploma/go-musthave-diploma-tpl/internal/models/balance"
 	balanceHistory "diploma/go-musthave-diploma-tpl/internal/models/balanceHistory"
 	db "diploma/go-musthave-diploma-tpl/internal/models/database"
@@ -14,10 +15,11 @@ import (
 )
 
 type ServerConfig struct {
-	ServerPort string `env:"RUN_ADDRESS" envDefault:"127.0.0.1:8080"`
-	Interval   string `env:"INTERVAL" envDefault:"5s"`
-	Database   string `env:"DATABASE_URI"`
-	Accrual    string `env:"ACCRUAL_SYSTEM_ADDRESS"`
+	ServerPort  string `env:"RUN_ADDRESS" envDefault:"127.0.0.1:8080"`
+	Interval    string `env:"INTERVAL" envDefault:"5s"`
+	Database    string `env:"DATABASE_URI"`
+	Accrual     string `env:"ACCRUAL_SYSTEM_ADDRESS"`
+	JWTPassword string `env:"JWT_PASSWORD"`
 }
 
 func Init() ServerConfig {
@@ -27,7 +29,8 @@ func Init() ServerConfig {
 	_, envAdddressExists := os.LookupEnv("RUN_ADDRESS")
 	_, envDBExists := os.LookupEnv("DATABASE_URI")
 	_, envAccrualExists := os.LookupEnv("ACCRUAL_SYSTEM_ADDRESS")
-	_, envIntervalExists := os.LookupEnv("Interval")
+	_, envIntervalExists := os.LookupEnv("INTERVAL")
+	_, envJWTPAsswordExists := os.LookupEnv("JWT_PASSWORD")
 	if err != nil {
 		log.Fatalf("unable to parse ennvironment variables: %e", err)
 	}
@@ -60,10 +63,18 @@ func Init() ServerConfig {
 		envCfg.Interval = flagValue
 		return nil
 	})
+	flag.Func("p", "Interval for the accrual system check (default 5s)", func(flagValue string) error {
+		if envJWTPAsswordExists {
+			return nil
+		}
+		envCfg.JWTPassword = flagValue
+		return nil
+	})
 	flag.Parse()
 
 	db.InitDBConnectionString(envCfg.Database)
 	order.InitAccrualURL(envCfg.Accrual)
+	auth.InitJWTPassword(envCfg.JWTPassword)
 	order.CreteTable()
 	account.CreteTable()
 	balance.CreteTable()

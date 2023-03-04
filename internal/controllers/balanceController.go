@@ -24,7 +24,9 @@ var WithdrawFromBalance = func(w http.ResponseWriter, r *http.Request) {
 	}
 	currentBalance := balance.Get(user)
 	resp := currentBalance.Withdraw(withdraw.Sum)
-	withdraw.Save()
+	if resp.ServerCode == 200 {
+		withdraw.Save()
+	}
 	server.Respond(w, resp)
 
 }

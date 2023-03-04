@@ -1,21 +1,12 @@
 package models
 
 import (
-	"os"
-
-	"golang.org/x/crypto/bcrypt"
-
+	auth "diploma/go-musthave-diploma-tpl/internal/models/auth"
 	db "diploma/go-musthave-diploma-tpl/internal/models/database"
 	server "diploma/go-musthave-diploma-tpl/internal/models/server"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
 )
-
-type Token struct {
-	UserID uint
-	jwt.StandardClaims
-}
 
 type Account struct {
 	ID       uint   `gorm:"primarykey"`
@@ -59,14 +50,13 @@ func (account *Account) Create() server.Response {
 	if resp := account.Validate(); resp.ServerCode != 200 {
 		return resp
 	}
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(account.Password), bcrypt.DefaultCost)
-	account.Password = string(hashedPassword)
+	account.Password = auth.EncryptPassword(account.Password)
 	db.Get().Create(account)
 	if account.ID == 0 {
 		return server.Message("Failed to create account, connection error.", 501)
 	}
-	tokenString := account.passwordHash()
-	account.Token = tokenString
+	account.Token = account.getToken()
+	account.Password = ""
 	return server.Response{Message: account, ServerCode: 200}
 }
 
@@ -79,21 +69,15 @@ func Login(email, password string) server.Response {
 		}
 		return server.Message("Connection error. Please retry", 500)
 	}
-	err = bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(password))
-	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+
+	if !auth.IsPasswordsEqual(account.Password, password) {
 		return server.Message("Invalid login credentials. Please try again", 401)
 	}
-	tokenString := account.passwordHash()
+	tokenString := account.getToken()
 	return server.Response{ServerCode: 200, Message: tokenString}
 }
 
-func (account *Account) passwordHash() string {
-	tk := &Token{UserID: account.ID}
-	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
-	tokenString, err := token.SignedString([]byte(os.Getenv("token_password")))
-	if err != nil {
-		panic(err)
-	}
-	account.Password = ""
-	return tokenString
+func (account *Account) getToken() string {
+
+	return auth.GetToken(account.ID)
 }
