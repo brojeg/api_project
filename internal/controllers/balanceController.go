@@ -32,25 +32,21 @@ var WithdrawFromBalance = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetBalancHistory = func(w http.ResponseWriter, r *http.Request) {
-	resp := server.Response{}
 	user, ok := auth.GetUserFromContext(r.Context())
 	if !ok {
 		server.Respond(w, server.Message("Could not get user from context", 500))
 	}
 	data := balanceHistory.GetBalanceHistory(user)
-	resp.Message = data
-	resp.ServerCode = 200
+	resp := server.Response{Message: data, ServerCode: 200}
 	server.Respond(w, resp)
 }
 
 var GetBalance = func(w http.ResponseWriter, r *http.Request) {
-	resp := server.Response{}
 	user, ok := auth.GetUserFromContext(r.Context())
 	if !ok {
 		server.Respond(w, server.Message("Could not get user from context", 500))
 	}
 	data := balance.Get(user)
-	resp.ServerCode = 200
-	resp.Message = data
+	resp := server.Response{Message: data, ServerCode: 200}
 	server.Respond(w, resp)
 }
