@@ -70,8 +70,8 @@ func (newOrder *Order) Create() server.Response {
 
 	db.Get().Create(newOrder)
 
-	resp := server.Message("success", 202)
-	resp.Message = newOrder
+	resp := server.Response{Message: newOrder, ServerCode: 200}
+
 	return resp
 }
 func (newOrder *Order) ApplyAccrual() {
