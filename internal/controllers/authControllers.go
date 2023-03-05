@@ -32,7 +32,9 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		resp := auth.ValidateToken(r)
 		if resp.ServerCode != 200 {
 			server.Respond(w, resp)
+			return
 		}
+
 		ctx := context.WithValue(r.Context(), auth.ContextUserKey, resp.Message.(uint))
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
