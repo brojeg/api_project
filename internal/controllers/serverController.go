@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	auth "diploma/go-musthave-diploma-tpl/internal/models/auth"
 	server "diploma/go-musthave-diploma-tpl/internal/models/server"
 	log "diploma/go-musthave-diploma-tpl/pkg/logger"
 	"errors"
@@ -37,7 +36,7 @@ func NewRouter() *mux.Router {
 	router.HandleFunc("/api/user/balance/withdraw", WithdrawFromBalance).Methods("POST")
 	router.HandleFunc("/api/user/withdrawals", GetBalancHistory).Methods("GET")
 	router.Use(server.LimitMiddleware)
-	router.Use(auth.JwtAuthentication)
+	router.Use(JwtAuthentication)
 	router.Use(server.HTTPLogger)
 
 	return router

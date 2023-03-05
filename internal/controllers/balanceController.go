@@ -20,7 +20,6 @@ var WithdrawFromBalance = func(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(withdraw)
 	if err != nil {
 		server.Respond(w, server.Message("Error while decoding request body", 500))
-		return
 	}
 	currentBalance := balance.Get(user)
 	resp := currentBalance.Withdraw(withdraw.Sum)
