@@ -10,16 +10,18 @@ import (
 	"flag"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/caarlos0/env/v6"
 )
 
 type ServerConfig struct {
-	ServerPort  string `env:"RUN_ADDRESS" envDefault:"127.0.0.1:8080"`
-	Interval    string `env:"INTERVAL" envDefault:"5s"`
-	Database    string `env:"DATABASE_URI"`
-	Accrual     string `env:"ACCRUAL_SYSTEM_ADDRESS"`
-	JWTPassword string `env:"JWT_PASSWORD"`
+	ServerPort     string `env:"RUN_ADDRESS" envDefault:"127.0.0.1:8080"`
+	Interval       string `env:"INTERVAL" envDefault:"5s"`
+	Database       string `env:"DATABASE_URI"`
+	Accrual        string `env:"ACCRUAL_SYSTEM_ADDRESS"`
+	JWTPassword    string `env:"JWT_PASSWORD"`
+	ExpirationTime int    `env:"EXPIRATION_TIME" envDefault:"15"`
 }
 
 func Init() ServerConfig {
@@ -31,6 +33,7 @@ func Init() ServerConfig {
 	_, envAccrualExists := os.LookupEnv("ACCRUAL_SYSTEM_ADDRESS")
 	_, envIntervalExists := os.LookupEnv("INTERVAL")
 	_, envJWTPAsswordExists := os.LookupEnv("JWT_PASSWORD")
+	_, envExpirationTimeExists := os.LookupEnv("EXPIRATION_TIME")
 	if err != nil {
 		log.Fatalf("unable to parse ennvironment variables: %e", err)
 	}
@@ -70,11 +73,22 @@ func Init() ServerConfig {
 		envCfg.JWTPassword = flagValue
 		return nil
 	})
+	flag.Func("t", "TTL for JWT token (default 15m", func(flagValue string) error {
+		if envExpirationTimeExists {
+			return nil
+		}
+		intVar, err := strconv.Atoi(flagValue)
+		if err != nil {
+			return err
+		}
+		envCfg.ExpirationTime = intVar
+		return nil
+	})
 	flag.Parse()
 
 	db.InitDBConnectionString(envCfg.Database)
 	order.InitAccrualURL(envCfg.Accrual)
-	auth.InitJWTPassword(envCfg.JWTPassword)
+	auth.InitJWTPassword(envCfg.JWTPassword, envCfg.ExpirationTime)
 	order.CreteTable()
 	account.CreteTable()
 	balance.CreteTable()

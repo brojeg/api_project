@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"net/http"
+	"time"
 
 	server "diploma/go-musthave-diploma-tpl/internal/models/server"
 
@@ -15,10 +16,18 @@ type contextKey string
 var (
 	ContextUserKey = contextKey("user")
 )
-var jwtPassword string
 
-func InitJWTPassword(pass string) {
-	jwtPassword = pass
+// var jwtPassword string
+var settings JWTSettings
+
+func InitJWTPassword(pass string, expTime int) {
+	settings.jwtPassword = pass
+	settings.expirationTime = expTime
+}
+
+type JWTSettings struct {
+	jwtPassword    string
+	expirationTime int
 }
 
 type Token struct {
@@ -32,9 +41,10 @@ func GetUserFromContext(ctx context.Context) (uint, bool) {
 }
 
 func GetToken(id uint) string {
-	tk := &Token{UserID: id}
+	expirationTime := time.Now().Add(time.Duration(settings.expirationTime) * time.Minute)
+	tk := &Token{UserID: id, StandardClaims: jwt.StandardClaims{ExpiresAt: expirationTime.Unix()}}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
-	tokenString, err := token.SignedString([]byte(jwtPassword))
+	tokenString, err := token.SignedString([]byte(settings.jwtPassword))
 	if err != nil {
 		panic(err)
 	}
@@ -57,9 +67,10 @@ func IsPasswordsEqual(existing, new string) bool {
 
 func ValidateToken(r *http.Request) server.Response {
 	tokenHeader := r.Header.Get("Authorization")
-	tk := &Token{}
+	expirationTime := time.Now().Add(time.Duration(settings.expirationTime) * time.Minute)
+	tk := &Token{StandardClaims: jwt.StandardClaims{ExpiresAt: expirationTime.Unix()}}
 	token, err := jwt.ParseWithClaims(tokenHeader, tk, func(token *jwt.Token) (interface{}, error) {
-		return []byte(jwtPassword), nil
+		return []byte(settings.jwtPassword), nil
 	})
 	if err != nil {
 		response := server.Message("Malformed authentication token", 401)
