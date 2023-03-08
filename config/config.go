@@ -17,9 +17,9 @@ import (
 
 type ServerConfig struct {
 	ServerPort     string `env:"RUN_ADDRESS" envDefault:"127.0.0.1:8080"`
-	Interval       string `env:"INTERVAL" envDefault:"5s"`
-	Database       string `env:"DATABASE_URI"`
-	Accrual        string `env:"ACCRUAL_SYSTEM_ADDRESS"`
+	Interval       string `env:"INTERVAL" envDefault:"20s"`
+	Database       string `env:"DATABASE_URI" envDefault:"host=localhost user=test_user dbname=test sslmode=disable password=111"`
+	Accrual        string `env:"ACCRUAL_SYSTEM_ADDRESS" envDefault:"127.0.0.1:8081"`
 	JWTPassword    string `env:"JWT_PASSWORD"`
 	ExpirationTime int    `env:"EXPIRATION_TIME" envDefault:"15"`
 }
@@ -59,7 +59,7 @@ func Init() ServerConfig {
 		envCfg.Accrual = flagValue
 		return nil
 	})
-	flag.Func("i", "Interval for the accrual system check (default 5s)", func(flagValue string) error {
+	flag.Func("i", "Interval for the accrual system check (default 20s)", func(flagValue string) error {
 		if envIntervalExists {
 			return nil
 		}
