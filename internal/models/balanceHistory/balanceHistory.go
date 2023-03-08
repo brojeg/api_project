@@ -10,7 +10,7 @@ import (
 
 var logger *zap.SugaredLogger = log.Init()
 
-func CreteTable() {
+func CreateTable() {
 	db.Get().AutoMigrate(&BalanceHistory{})
 }
 

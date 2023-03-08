@@ -44,7 +44,7 @@ func Init() ServerConfig {
 		envCfg.ServerPort = flagValue
 		return nil
 	})
-	flag.Func("d", "Posgres connection string (No default value)", func(flagValue string) error {
+	flag.Func("d", "Postgres connection string (No default value)", func(flagValue string) error {
 		if envDBExists {
 			return nil
 		}
@@ -89,10 +89,10 @@ func Init() ServerConfig {
 	db.InitDBConnectionString(envCfg.Database)
 	order.InitAccrualURL(envCfg.Accrual)
 	auth.InitJWTPassword(envCfg.JWTPassword, envCfg.ExpirationTime)
-	order.CreteTable()
-	account.CreteTable()
-	balance.CreteTable()
-	balanceHistory.CreteTable()
+	order.CreateTable()
+	account.CreateTable()
+	balance.CreateTable()
+	balanceHistory.CreateTable()
 
 	return envCfg
 }

@@ -12,7 +12,7 @@ type Balance struct {
 	UserID    uint    `json:"-"`
 }
 
-func CreteTable() {
+func CreateTable() {
 	db.Get().AutoMigrate(&Balance{})
 }
 

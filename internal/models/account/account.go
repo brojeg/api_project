@@ -22,7 +22,7 @@ type iAccount interface {
 	passwordHash() string
 }
 
-func CreteTable() {
+func CreateTable() {
 	db.Get().AutoMigrate(&Account{})
 }
 

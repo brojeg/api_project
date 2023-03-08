@@ -11,12 +11,13 @@ import (
 )
 
 type HTTPReqInfo struct {
-	Method    string        `json:"method"`
-	URI       string        `json:"uri"`
-	IPAddr    string        `json:"ipaddr"`
-	Code      int           `json:"code"`
-	Duration  time.Duration `json:"duration"`
-	UserAgent string        `json:"user_agent"`
+	Method      string        `json:"method"`
+	URI         string        `json:"uri"`
+	IPAddr      string        `json:"ipaddr"`
+	Code        int           `json:"code"`
+	Duration    time.Duration `json:"duration"`
+	UserAgent   string        `json:"user_agent"`
+	RequestBody any
 }
 
 var HTTPLogger = func(h http.Handler) http.Handler {

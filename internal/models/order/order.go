@@ -30,7 +30,7 @@ type Order struct {
 	UserID     uint      `json:"-"`
 }
 
-func CreteTable() {
+func CreateTable() {
 	db.Get().AutoMigrate(&Order{})
 }
 func InitAccrualURL(config string) {
