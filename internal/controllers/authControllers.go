@@ -19,7 +19,7 @@ var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Authorization", resp.Message.(string))
 	server.Respond(w, resp)
 }
-var JwtAuthentication = func(next http.Handler) http.Handler {
+var JwtAuthenticationMiddleware = func(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		notAuth := []string{"/api/user/register", "/api/user/login"}
 		requestPath := r.URL.Path

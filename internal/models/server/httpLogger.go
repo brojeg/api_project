@@ -20,7 +20,7 @@ type HTTPReqInfo struct {
 	RequestBody any
 }
 
-var HTTPLogger = func(h http.Handler) http.Handler {
+var HTTPLoggerMiddleware = func(h http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		requestInfo := &HTTPReqInfo{
 			Method:    r.Method,
