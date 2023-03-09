@@ -25,7 +25,7 @@ func (account *Account) Validate() server.Response {
 		return server.Message("Login is not valid", 400)
 	}
 	if len(account.Password) < 6 {
-		return server.Message("Password is required", 400)
+		return server.Message("Valid password is required", 400)
 	}
 	existingAccount := &Account{}
 	err := db.Get().Table("accounts").Where("login = ?", account.Login).First(existingAccount).Error
