@@ -1,0 +1,234 @@
+2023/03/10 13:21:09  POST /api/user/register [CorrelationID: 20230310-132109.921407]
+2023/03/10 13:21:10  POST /api/user/register 200 [CorrelationID: 20230310-132109.921407]
+2023/03/10 13:21:10 Response body: {"ID":116,"login":"AAXA","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjExNiwiZXhwIjoxNjc4NDg0MTcwfQ.rKzpo-zFNF__HLL8_P6gIb1V3K6GTilxutltUaUpPIQ"}
+2023/03/10 13:21:10  POST /api/user/register [CorrelationID: 20230310-132110.316316]
+2023/03/10 13:21:10  POST /api/user/register 409 [CorrelationID: 20230310-132110.316316]
+2023/03/10 13:21:10 Response body: "Email address already in use by another user."
+2023/03/10 13:48:18  POST /api/user/register [CorrelationID: 20230310-134818.283221]
+2023/03/10 13:48:18  POST /api/user/register 200 [CorrelationID: 20230310-134818.283221]
+2023/03/10 13:48:18 Response body: {"ID":117,"login":"BIEB","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjExNywiZXhwIjoxNjc4NDg1Nzk4fQ.XADvh5xXORFf0CTnnpdz97fZmqKaZbWNlR5aYFoFjTM"}
+2023/03/10 13:48:18  POST /api/user/register [CorrelationID: 20230310-134818.686822]
+2023/03/10 13:48:18  POST /api/user/register 409 [CorrelationID: 20230310-134818.686822]
+2023/03/10 13:48:18 Response body: "Email address already in use by another user."
+2023/03/10 13:51:02  POST /api/user/register [CorrelationID: 20230310-135102.623372]
+2023/03/10 13:51:03  POST /api/user/register 200 [CorrelationID: 20230310-135102.623372]
+2023/03/10 13:51:03 Response body: {"ID":118,"login":"UPXM","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjExOCwiZXhwIjoxNjc4NDg1OTYyfQ.8WikSh9hAziwaRXKKBd7ahOgTCsDmbDN49CJYFf-d8Y"}
+2023/03/10 13:51:03  POST /api/user/register [CorrelationID: 20230310-135103.052506]
+2023/03/10 13:51:03  POST /api/user/register 409 [CorrelationID: 20230310-135103.052506]
+2023/03/10 13:51:03 Response body: "Email address already in use by another user."
+2023/03/10 13:54:37  POST /api/user/register [CorrelationID: 20230310-135437.895391]
+2023/03/10 13:54:38  POST /api/user/register 200 [CorrelationID: 20230310-135437.895391]
+2023/03/10 13:54:38 Response body: {"ID":119,"login":"UFBY","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjExOSwiZXhwIjoxNjc4NDg2MTc4fQ.wCrs7zgzMJlb7Y_XbuDMeILZSIs4KTC7g5xmufgWUHo"}
+2023/03/10 13:54:38  POST /api/user/register [CorrelationID: 20230310-135438.343913]
+2023/03/10 13:54:38  POST /api/user/register 409 [CorrelationID: 20230310-135438.343913]
+2023/03/10 13:54:38 Response body: "Email address already in use by another user."
+2023/03/10 13:56:45  POST /api/user/register [CorrelationID: 20230310-135645.35861]
+2023/03/10 13:56:45  POST /api/user/register 200 [CorrelationID: 20230310-135645.35861]
+2023/03/10 13:56:45 Response body: {"ID":120,"login":"UDSD","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyMCwiZXhwIjoxNjc4NDg2MzA1fQ.Bq_-N3zkqHSFYu0l1HpiIu3E-1tttF0bji5yBEg7AWk"}
+2023/03/10 13:56:45  POST /api/user/register [CorrelationID: 20230310-135645.789777]
+2023/03/10 13:56:45  POST /api/user/register 409 [CorrelationID: 20230310-135645.789777]
+2023/03/10 13:56:45 Response body: "Email address already in use by another user."
+2023/03/10 13:57:13  POST /api/user/register [CorrelationID: 20230310-135713.995715]
+2023/03/10 13:57:14  POST /api/user/register 200 [CorrelationID: 20230310-135713.995715]
+2023/03/10 13:57:14 Response body: {"ID":121,"login":"WXPW","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyMSwiZXhwIjoxNjc4NDg2MzM0fQ.Qgnbk3x-qMJZBGoH2gQHGQpCApEwu1j8ed4CuuHzrI4"}
+2023/03/10 13:57:14  POST /api/user/register [CorrelationID: 20230310-135714.491971]
+2023/03/10 13:57:14  POST /api/user/register 409 [CorrelationID: 20230310-135714.491971]
+2023/03/10 13:57:14 Response body: "Email address already in use by another user."
+2023/03/10 13:57:25  POST /api/user/register [CorrelationID: 20230310-135725.32212]
+2023/03/10 13:57:25  POST /api/user/register 200 [CorrelationID: 20230310-135725.32212]
+2023/03/10 13:57:25 Response body: {"ID":122,"login":"QVAX","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyMiwiZXhwIjoxNjc4NDg2MzQ1fQ.-CNzI3akP9f0G-0HczcOyc4iynnNcAsS0K5_eY57EKw"}
+2023/03/10 13:57:25  POST /api/user/register [CorrelationID: 20230310-135725.786614]
+2023/03/10 13:57:26  POST /api/user/register 409 [CorrelationID: 20230310-135725.786614]
+2023/03/10 13:57:26 Response body: "Email address already in use by another user."
+2023/03/10 14:00:07  POST /api/user/register [CorrelationID: 20230310-140007.526359]
+2023/03/10 14:00:07  POST /api/user/register 200 [CorrelationID: 20230310-140007.526359]
+2023/03/10 14:00:07 Response body: {"ID":123,"login":"LDIN","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyMywiZXhwIjoxNjc4NDg2NTA3fQ.UVjs7PA3RDai4rpK_Mkv5dQyVHd0kuJvqpml6tIIJEc"}
+2023/03/10 14:00:07  POST /api/user/register [CorrelationID: 20230310-140007.96138]
+2023/03/10 14:00:08  POST /api/user/register 409 [CorrelationID: 20230310-140007.96138]
+2023/03/10 14:00:08 Response body: "Email address already in use by another user."
+2023/03/10 14:00:08  POST /api/user/register [CorrelationID: 20230310-140008.166839]
+2023/03/10 14:00:08  POST /api/user/register 400 [CorrelationID: 20230310-140008.166839]
+2023/03/10 14:00:08 Response body: "Login is not valid"
+2023/03/10 14:00:08  POST /api/user/register [CorrelationID: 20230310-140008.272472]
+2023/03/10 14:00:08  POST /api/user/register 400 [CorrelationID: 20230310-140008.272472]
+2023/03/10 14:00:08 Response body: "Valid password is required"
+2023/03/10 14:00:08  POST /api/user/register [CorrelationID: 20230310-140008.3799]
+2023/03/10 14:00:08  POST /api/user/register 400 [CorrelationID: 20230310-140008.3799]
+2023/03/10 14:00:08 Response body: "Login is not valid"
+2023/03/10 14:00:08  POST /api/user/register [CorrelationID: 20230310-140008.485299]
+2023/03/10 14:00:08  POST /api/user/register 400 [CorrelationID: 20230310-140008.485299]
+2023/03/10 14:00:08 Response body: "Login is not valid"
+2023/03/10 14:00:08  POST /api/user/register [CorrelationID: 20230310-140008.587463]
+2023/03/10 14:00:08  POST /api/user/register 400 [CorrelationID: 20230310-140008.587463]
+2023/03/10 14:00:08 Response body: "Valid password is required"
+2023/03/10 14:03:48  POST /api/user/register [CorrelationID: 20230310-140348.402845]
+2023/03/10 14:03:48  POST /api/user/register 200 [CorrelationID: 20230310-140348.402845]
+2023/03/10 14:03:48 Response body: {"ID":124,"login":"OGQK","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyNCwiZXhwIjoxNjc4NDg2NzI4fQ.YXAiwXGryoC2ouqLPuXLPw3GnDm2zQHplqJSD5rMGvQ"}
+2023/03/10 14:03:48  POST /api/user/register [CorrelationID: 20230310-140348.840389]
+2023/03/10 14:03:49  POST /api/user/register 409 [CorrelationID: 20230310-140348.840389]
+2023/03/10 14:03:49 Response body: "Email address already in use by another user."
+2023/03/10 14:03:49  POST /api/user/register [CorrelationID: 20230310-140349.068444]
+2023/03/10 14:03:49  POST /api/user/register 400 [CorrelationID: 20230310-140349.068444]
+2023/03/10 14:03:49 Response body: "Login is not valid"
+2023/03/10 14:03:49  POST /api/user/register [CorrelationID: 20230310-140349.173614]
+2023/03/10 14:03:49  POST /api/user/register 400 [CorrelationID: 20230310-140349.173614]
+2023/03/10 14:03:49 Response body: "Valid password is required"
+2023/03/10 14:03:49  POST /api/user/register [CorrelationID: 20230310-140349.279787]
+2023/03/10 14:03:49  POST /api/user/register 400 [CorrelationID: 20230310-140349.279787]
+2023/03/10 14:03:49 Response body: "Login is not valid"
+2023/03/10 14:03:49  POST /api/user/register [CorrelationID: 20230310-140349.392155]
+2023/03/10 14:03:49  POST /api/user/register 400 [CorrelationID: 20230310-140349.392155]
+2023/03/10 14:03:49 Response body: "Login is not valid"
+2023/03/10 14:03:49  POST /api/user/register [CorrelationID: 20230310-140349.496228]
+2023/03/10 14:03:49  POST /api/user/register 400 [CorrelationID: 20230310-140349.496228]
+2023/03/10 14:03:49 Response body: "Valid password is required"
+2023/03/10 14:04:36  POST /api/user/register [CorrelationID: 20230310-140436.719345]
+2023/03/10 14:04:37  POST /api/user/register 200 [CorrelationID: 20230310-140436.719345]
+2023/03/10 14:04:37 Response body: {"ID":125,"login":"ZBMB","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyNSwiZXhwIjoxNjc4NDg2Nzc3fQ.9s98rcZm6aSj0QOnVqA9YlWGQKOIjy5awWZqwQv44iI"}
+2023/03/10 14:04:37  POST /api/user/register [CorrelationID: 20230310-140437.264907]
+2023/03/10 14:04:37  POST /api/user/register 409 [CorrelationID: 20230310-140437.264907]
+2023/03/10 14:04:37 Response body: "Email address already in use by another user."
+2023/03/10 14:04:37  POST /api/user/register [CorrelationID: 20230310-140437.48645]
+2023/03/10 14:04:37  POST /api/user/register 400 [CorrelationID: 20230310-140437.48645]
+2023/03/10 14:04:37 Response body: "Login is not valid"
+2023/03/10 14:04:37  POST /api/user/register [CorrelationID: 20230310-140437.598263]
+2023/03/10 14:04:37  POST /api/user/register 400 [CorrelationID: 20230310-140437.598263]
+2023/03/10 14:04:37 Response body: "Valid password is required"
+2023/03/10 14:04:37  POST /api/user/register [CorrelationID: 20230310-140437.725489]
+2023/03/10 14:04:37  POST /api/user/register 400 [CorrelationID: 20230310-140437.725489]
+2023/03/10 14:04:37 Response body: "Login is not valid"
+2023/03/10 14:04:37  POST /api/user/register [CorrelationID: 20230310-140437.851142]
+2023/03/10 14:04:37  POST /api/user/register 400 [CorrelationID: 20230310-140437.851142]
+2023/03/10 14:04:37 Response body: "Login is not valid"
+2023/03/10 14:04:37  POST /api/user/register [CorrelationID: 20230310-140437.982036]
+2023/03/10 14:04:38  POST /api/user/register 400 [CorrelationID: 20230310-140437.982036]
+2023/03/10 14:04:38 Response body: "Valid password is required"
+2023/03/10 14:04:52  POST /api/user/register [CorrelationID: 20230310-140452.389817]
+2023/03/10 14:04:52  POST /api/user/register 200 [CorrelationID: 20230310-140452.389817]
+2023/03/10 14:04:52 Response body: {"ID":126,"login":"DXZO","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyNiwiZXhwIjoxNjc4NDg2NzkyfQ.0_TrAttEp_DWRWbAXYf88oYiwRdTjL-PfX_tGwA0ABI"}
+2023/03/10 14:04:52  POST /api/user/register [CorrelationID: 20230310-140452.866808]
+2023/03/10 14:04:53  POST /api/user/register 409 [CorrelationID: 20230310-140452.866808]
+2023/03/10 14:04:53 Response body: "Email address already in use by another user."
+2023/03/10 14:04:53  POST /api/user/register [CorrelationID: 20230310-140453.093076]
+2023/03/10 14:04:53  POST /api/user/register 400 [CorrelationID: 20230310-140453.093076]
+2023/03/10 14:04:53 Response body: "Login is not valid"
+2023/03/10 14:04:53  POST /api/user/register [CorrelationID: 20230310-140453.198144]
+2023/03/10 14:04:53  POST /api/user/register 400 [CorrelationID: 20230310-140453.198144]
+2023/03/10 14:04:53 Response body: "Valid password is required"
+2023/03/10 14:04:53  POST /api/user/register [CorrelationID: 20230310-140453.303409]
+2023/03/10 14:04:53  POST /api/user/register 400 [CorrelationID: 20230310-140453.303409]
+2023/03/10 14:04:53 Response body: "Login is not valid"
+2023/03/10 14:04:53  POST /api/user/register [CorrelationID: 20230310-140453.415706]
+2023/03/10 14:04:53  POST /api/user/register 400 [CorrelationID: 20230310-140453.415706]
+2023/03/10 14:04:53 Response body: "Login is not valid"
+2023/03/10 14:04:53  POST /api/user/register [CorrelationID: 20230310-140453.52527]
+2023/03/10 14:04:53  POST /api/user/register 400 [CorrelationID: 20230310-140453.52527]
+2023/03/10 14:04:53 Response body: "Valid password is required"
+2023/03/10 14:07:02  POST /api/user/register [CorrelationID: 20230310-140702.808594]
+2023/03/10 14:07:03  POST /api/user/register 200 [CorrelationID: 20230310-140702.808594]
+2023/03/10 14:07:03 Response body: {"ID":127,"login":"EAUZ","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyNywiZXhwIjoxNjc4NDg2OTIzfQ.SAUVDEGt_snOX9s3_coDNBopvv-QYcbz-BWWM053Po8"}
+2023/03/10 14:07:03  POST /api/user/register [CorrelationID: 20230310-140703.466543]
+2023/03/10 14:07:03  POST /api/user/register 409 [CorrelationID: 20230310-140703.466543]
+2023/03/10 14:07:03 Response body: "Email address already in use by another user."
+2023/03/10 14:07:03  POST /api/user/register [CorrelationID: 20230310-140703.805676]
+2023/03/10 14:07:03  POST /api/user/register 400 [CorrelationID: 20230310-140703.805676]
+2023/03/10 14:07:03 Response body: "Login is not valid"
+2023/03/10 14:07:03  POST /api/user/register [CorrelationID: 20230310-140703.938235]
+2023/03/10 14:07:04  POST /api/user/register 400 [CorrelationID: 20230310-140703.938235]
+2023/03/10 14:07:04 Response body: "Valid password is required"
+2023/03/10 14:07:04  POST /api/user/register [CorrelationID: 20230310-140704.089854]
+2023/03/10 14:07:04  POST /api/user/register 400 [CorrelationID: 20230310-140704.089854]
+2023/03/10 14:07:04 Response body: "Login is not valid"
+2023/03/10 14:07:04  POST /api/user/register [CorrelationID: 20230310-140704.224273]
+2023/03/10 14:07:04  POST /api/user/register 400 [CorrelationID: 20230310-140704.224273]
+2023/03/10 14:07:04 Response body: "Login is not valid"
+2023/03/10 14:07:04  POST /api/user/register [CorrelationID: 20230310-140704.36567]
+2023/03/10 14:07:04  POST /api/user/register 400 [CorrelationID: 20230310-140704.36567]
+2023/03/10 14:07:04 Response body: "Valid password is required"
+2023/03/10 14:07:04  POST /api/user/login [CorrelationID: 20230310-140704.517513]
+2023/03/10 14:07:04  POST /api/user/login 200 [CorrelationID: 20230310-140704.517513]
+2023/03/10 14:07:04 Response body: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyNywiZXhwIjoxNjc4NDg2OTI0fQ.Xn9fosFu0FlM2Nnly0qYvQja8BJlTkwxHbqGW8dRO1k"
+2023/03/10 14:08:15  POST /api/user/register [CorrelationID: 20230310-140815.871636]
+2023/03/10 14:08:16  POST /api/user/register 200 [CorrelationID: 20230310-140815.871636]
+2023/03/10 14:08:16 Response body: {"ID":128,"login":"OEQC","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyOCwiZXhwIjoxNjc4NDg2OTk2fQ.9iNFf1d3pA9nd94wRSyhg8Mr_llyGHDjXojUEm26qpE"}
+2023/03/10 14:08:16  POST /api/user/register [CorrelationID: 20230310-140816.355684]
+2023/03/10 14:08:16  POST /api/user/register 409 [CorrelationID: 20230310-140816.355684]
+2023/03/10 14:08:16 Response body: "Email address already in use by another user."
+2023/03/10 14:08:16  POST /api/user/register [CorrelationID: 20230310-140816.605611]
+2023/03/10 14:08:16  POST /api/user/register 400 [CorrelationID: 20230310-140816.605611]
+2023/03/10 14:08:16 Response body: "Login is not valid"
+2023/03/10 14:08:16  POST /api/user/register [CorrelationID: 20230310-140816.722958]
+2023/03/10 14:08:16  POST /api/user/register 400 [CorrelationID: 20230310-140816.722958]
+2023/03/10 14:08:16 Response body: "Valid password is required"
+2023/03/10 14:08:16  POST /api/user/register [CorrelationID: 20230310-140816.836422]
+2023/03/10 14:08:16  POST /api/user/register 400 [CorrelationID: 20230310-140816.836422]
+2023/03/10 14:08:16 Response body: "Login is not valid"
+2023/03/10 14:08:16  POST /api/user/register [CorrelationID: 20230310-140816.949659]
+2023/03/10 14:08:17  POST /api/user/register 400 [CorrelationID: 20230310-140816.949659]
+2023/03/10 14:08:17 Response body: "Login is not valid"
+2023/03/10 14:08:17  POST /api/user/register [CorrelationID: 20230310-140817.065264]
+2023/03/10 14:08:17  POST /api/user/register 400 [CorrelationID: 20230310-140817.065264]
+2023/03/10 14:08:17 Response body: "Valid password is required"
+2023/03/10 14:08:17  POST /api/user/login [CorrelationID: 20230310-140817.184762]
+2023/03/10 14:08:17  POST /api/user/login 200 [CorrelationID: 20230310-140817.184762]
+2023/03/10 14:08:17 Response body: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyOCwiZXhwIjoxNjc4NDg2OTk3fQ.vOQt6VXyQF0INgoEcdOtZeXwiLhEunXjDNbNnNKsTr0"
+2023/03/10 14:08:17  POST /api/user/login [CorrelationID: 20230310-140817.426307]
+2023/03/10 14:08:17  POST /api/user/login 500 [CorrelationID: 20230310-140817.426307]
+2023/03/10 14:08:17 Response body: "Email address not found"
+2023/03/10 14:10:36  POST /api/user/register [CorrelationID: 20230310-141036.981253]
+2023/03/10 14:10:37  POST /api/user/register 200 [CorrelationID: 20230310-141036.981253]
+2023/03/10 14:10:37 Response body: {"ID":129,"login":"XDBY","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyOSwiZXhwIjoxNjc4NDg3MTM3fQ.i8kjonpRhSfILeSu-rMiS9_JLZK8JBtamD72GIXUW4M"}
+2023/03/10 14:10:37  POST /api/user/register [CorrelationID: 20230310-141037.432292]
+2023/03/10 14:10:37  POST /api/user/register 409 [CorrelationID: 20230310-141037.432292]
+2023/03/10 14:10:37 Response body: "Email address already in use by another user."
+2023/03/10 14:10:37  POST /api/user/register [CorrelationID: 20230310-141037.63972]
+2023/03/10 14:10:37  POST /api/user/register 400 [CorrelationID: 20230310-141037.63972]
+2023/03/10 14:10:37 Response body: "Login is not valid"
+2023/03/10 14:10:37  POST /api/user/register [CorrelationID: 20230310-141037.7485]
+2023/03/10 14:10:37  POST /api/user/register 400 [CorrelationID: 20230310-141037.7485]
+2023/03/10 14:10:37 Response body: "Valid password is required"
+2023/03/10 14:10:37  POST /api/user/register [CorrelationID: 20230310-141037.859441]
+2023/03/10 14:10:37  POST /api/user/register 400 [CorrelationID: 20230310-141037.859441]
+2023/03/10 14:10:37 Response body: "Login is not valid"
+2023/03/10 14:10:37  POST /api/user/register [CorrelationID: 20230310-141037.961152]
+2023/03/10 14:10:38  POST /api/user/register 400 [CorrelationID: 20230310-141037.961152]
+2023/03/10 14:10:38 Response body: "Login is not valid"
+2023/03/10 14:10:38  POST /api/user/register [CorrelationID: 20230310-141038.068397]
+2023/03/10 14:10:38  POST /api/user/register 400 [CorrelationID: 20230310-141038.068397]
+2023/03/10 14:10:38 Response body: "Valid password is required"
+2023/03/10 14:10:38  POST /api/user/login [CorrelationID: 20230310-141038.176793]
+2023/03/10 14:10:38  POST /api/user/login 200 [CorrelationID: 20230310-141038.176793]
+2023/03/10 14:10:38 Response body: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyOSwiZXhwIjoxNjc4NDg3MTM4fQ.Sov8DKEZl4IGADhFS_BFywSyMZejuRq5HAqTFsF_9vI"
+2023/03/10 14:10:38  POST /api/user/login [CorrelationID: 20230310-141038.429293]
+2023/03/10 14:10:38  POST /api/user/login 401 [CorrelationID: 20230310-141038.429293]
+2023/03/10 14:10:38 Response body: "Email address not found"
+2023/03/10 14:11:42  POST /api/user/register [CorrelationID: 20230310-141142.359078]
+2023/03/10 14:11:42  POST /api/user/register 200 [CorrelationID: 20230310-141142.359078]
+2023/03/10 14:11:42 Response body: {"ID":130,"login":"MEJC","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEzMCwiZXhwIjoxNjc4NDg3MjAyfQ.x9baeqqBFmCA6oIKA5MF0VXp_txaadKfevniR56Ux1o"}
+2023/03/10 14:11:42  POST /api/user/register [CorrelationID: 20230310-141142.810669]
+2023/03/10 14:11:43  POST /api/user/register 409 [CorrelationID: 20230310-141142.810669]
+2023/03/10 14:11:43 Response body: "Email address already in use by another user."
+2023/03/10 14:11:43  POST /api/user/register [CorrelationID: 20230310-141143.045178]
+2023/03/10 14:11:43  POST /api/user/register 400 [CorrelationID: 20230310-141143.045178]
+2023/03/10 14:11:43 Response body: "Login is not valid"
+2023/03/10 14:11:43  POST /api/user/register [CorrelationID: 20230310-141143.148762]
+2023/03/10 14:11:43  POST /api/user/register 400 [CorrelationID: 20230310-141143.148762]
+2023/03/10 14:11:43 Response body: "Valid password is required"
+2023/03/10 14:11:43  POST /api/user/register [CorrelationID: 20230310-141143.260932]
+2023/03/10 14:11:43  POST /api/user/register 400 [CorrelationID: 20230310-141143.260932]
+2023/03/10 14:11:43 Response body: "Login is not valid"
+2023/03/10 14:11:43  POST /api/user/register [CorrelationID: 20230310-141143.380275]
+2023/03/10 14:11:43  POST /api/user/register 400 [CorrelationID: 20230310-141143.380275]
+2023/03/10 14:11:43 Response body: "Login is not valid"
+2023/03/10 14:11:43  POST /api/user/register [CorrelationID: 20230310-141143.506639]
+2023/03/10 14:11:43  POST /api/user/register 400 [CorrelationID: 20230310-141143.506639]
+2023/03/10 14:11:43 Response body: "Valid password is required"
+2023/03/10 14:11:43  POST /api/user/login [CorrelationID: 20230310-141143.626718]
+2023/03/10 14:11:43  POST /api/user/login 200 [CorrelationID: 20230310-141143.626718]
+2023/03/10 14:11:43 Response body: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEzMCwiZXhwIjoxNjc4NDg3MjAzfQ.Kose-M042Q6EZESP8wp47r5v-otpVp1Iyz543yWEGOk"
+2023/03/10 14:11:43  POST /api/user/login [CorrelationID: 20230310-141143.869531]
+2023/03/10 14:11:43  POST /api/user/login 401 [CorrelationID: 20230310-141143.869531]
+2023/03/10 14:11:43 Response body: "Email address not found"
+2023/03/10 14:11:43  POST /api/user/login [CorrelationID: 20230310-141143.995533]
+2023/03/10 14:11:44  POST /api/user/login 401 [CorrelationID: 20230310-141143.995533]
+2023/03/10 14:11:44 Response body: "Invalid login credentials. Please try again"

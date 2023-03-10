@@ -57,7 +57,7 @@ func Login(email, password string) server.Response {
 	err := db.Get().Table("accounts").Where("login = ?", email).First(account).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return server.Message("Email address not found", 500)
+			return server.Message("Email address not found", 401)
 		}
 		return server.Message("Connection error. Please retry", 500)
 	}
