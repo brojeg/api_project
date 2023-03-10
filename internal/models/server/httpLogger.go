@@ -16,6 +16,12 @@ type key string
 
 const correlationIDKey key = "correlationID"
 
+var path string
+
+func SetServerLogPath(p string) {
+	path = p
+}
+
 func LoggingMiddleware(next http.Handler) http.Handler {
 	logFile, err := createLogFile()
 	if err != nil {
@@ -56,8 +62,10 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 
 func createLogFile() (*os.File, error) {
 	currentDate := time.Now().Format("2006-01-02")
+	mydir, _ := os.Getwd()
+	fmt.Println(mydir)
 	// create the log file with the current date as the file name
-	logFile, err := os.OpenFile("logs/server-"+currentDate+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
+	logFile, err := os.OpenFile(path+"server-"+currentDate+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
 	if err != nil {
 		return nil, fmt.Errorf("error creating log file: %v", err)
 	}

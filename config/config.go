@@ -7,7 +7,9 @@ import (
 	balanceHistory "diploma/go-musthave-diploma-tpl/internal/models/balanceHistory"
 	db "diploma/go-musthave-diploma-tpl/internal/models/database"
 	order "diploma/go-musthave-diploma-tpl/internal/models/order"
+	server "diploma/go-musthave-diploma-tpl/internal/models/server"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -23,6 +25,7 @@ type ServerConfig struct {
 	Accrual        string `env:"ACCRUAL_SYSTEM_ADDRESS" envDefault:"127.0.0.1:8081"`
 	JWTPassword    string `env:"JWT_PASSWORD"`
 	ExpirationTime int    `env:"EXPIRATION_TIME" envDefault:"15"`
+	ServerLog      string `env:"SERVER_LOG"`
 }
 
 func Init() ServerConfig {
@@ -31,13 +34,14 @@ func Init() ServerConfig {
 
 	var envCfg ServerConfig
 	err := env.Parse(&envCfg)
-
+	fmt.Println(envCfg.ServerLog)
 	_, envAdddressExists := os.LookupEnv("RUN_ADDRESS")
 	_, envDBExists := os.LookupEnv("DATABASE_URI")
 	_, envAccrualExists := os.LookupEnv("ACCRUAL_SYSTEM_ADDRESS")
 	_, envIntervalExists := os.LookupEnv("INTERVAL")
 	_, envJWTPAsswordExists := os.LookupEnv("JWT_PASSWORD")
 	_, envExpirationTimeExists := os.LookupEnv("EXPIRATION_TIME")
+
 	if err != nil {
 		log.Fatalf("unable to parse ennvironment variables: %e", err)
 	}
@@ -93,10 +97,12 @@ func Init() ServerConfig {
 	db.InitDBConnectionString(envCfg.Database)
 	order.InitAccrualURL(envCfg.Accrual)
 	auth.InitJWTPassword(envCfg.JWTPassword, envCfg.ExpirationTime)
+	server.SetServerLogPath(envCfg.ServerLog)
 	order.CreateTable()
 	account.CreateTable()
 	balance.CreateTable()
 	balanceHistory.CreateTable()
 
+	fmt.Println(envCfg.ServerLog)
 	return envCfg
 }
