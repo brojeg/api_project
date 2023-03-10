@@ -101,15 +101,15 @@ func TestAPISuite(t *testing.T) {
 func randString(length int) string {
 	rand.Seed(time.Now().Unix())
 
-	ran_str := make([]byte, length)
+	ranStr := make([]byte, length)
 
 	// Generating Random string
 	for i := 0; i < length; i++ {
-		ran_str[i] = byte(65 + rand.Intn(26))
+		ranStr[i] = byte(65 + rand.Intn(26))
 	}
 
 	// Converting byte slice to string
-	str := string(ran_str)
+	str := string(ranStr)
 
 	return str
 }
