@@ -1,67 +1,65 @@
 package model
 
 import (
-	"encoding/json"
-	"fmt"
+	"bytes"
+	"context"
+	"io"
+	"log"
 	"net/http"
-	"strings"
+	"net/http/httptest"
+	"os"
 	"time"
-
-	"github.com/felixge/httpsnoop"
 )
 
-type HTTPReqInfo struct {
-	Method      string        `json:"method"`
-	URI         string        `json:"uri"`
-	IPAddr      string        `json:"ipaddr"`
-	Code        int           `json:"code"`
-	Duration    time.Duration `json:"duration"`
-	UserAgent   string        `json:"user_agent"`
-	RequestBody any
+type key string
+
+const correlationIDKey key = "correlationID"
+
+func LoggingMiddleware(next http.Handler) http.Handler {
+	logFile, err := os.OpenFile("logs/server.log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
+	if err != nil {
+		log.Fatalf("Error opening log file: %v", err)
+	}
+	logger := log.New(logFile, "", log.LstdFlags)
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		correlationID := generateCorrelationID()
+		ctx := context.WithValue(r.Context(), correlationIDKey, correlationID)
+
+		// create a new buffer to read the request body
+		requestBodyBuffer := new(bytes.Buffer)
+		teeReader := io.TeeReader(r.Body, requestBodyBuffer)
+
+		// replace the request body with the buffer reader
+		r.Body = io.NopCloser(teeReader)
+
+		logger.Printf("%s %s %s [CorrelationID: %s]", r.RemoteAddr, r.Method, r.URL, correlationID)
+
+		// create a response recorder to capture the response
+		recorder := httptest.NewRecorder()
+
+		// call the next handler in the chain, passing the response recorder instead of the original response writer
+		next.ServeHTTP(recorder, r.WithContext(ctx))
+
+		responseBody := recorder.Body.Bytes()
+		// get the correlation ID from the context
+		correlationID = ctx.Value(correlationIDKey).(string)
+		logger.Printf("%s %s %s %d [CorrelationID: %s]", r.RemoteAddr, r.Method, r.URL, recorder.Code, correlationID)
+		logger.Printf("Response body: %s", responseBody)
+
+		// copy the headers from the recorder to the original response writer
+		for k, v := range recorder.Header() {
+			w.Header()[k] = v
+		}
+		w.Header().Set("CorrelationID", correlationID)
+		w.WriteHeader(recorder.Code)
+
+		// write the response body to the original response writer
+		w.Write(responseBody)
+	})
 }
 
-var HTTPLoggerMiddleware = func(h http.Handler) http.Handler {
-	fn := func(w http.ResponseWriter, r *http.Request) {
-		requestInfo := &HTTPReqInfo{
-			Method:    r.Method,
-			URI:       r.URL.String(),
-			UserAgent: r.Header.Get("User-Agent"),
-		}
-
-		requestInfo.IPAddr = requestGetRemoteAddress(r)
-		m := httpsnoop.CaptureMetrics(h, w, r)
-
-		requestInfo.Code = m.Code
-		requestInfo.Duration = m.Duration
-		data, err := json.Marshal(requestInfo)
-		if err != nil {
-			panic(err)
-		}
-		fmt.Println(string(data)) //TODO create a better representation
-	}
-	return http.HandlerFunc(fn)
-}
-
-func requestGetRemoteAddress(r *http.Request) string {
-	hdr := r.Header
-	hdrRealIP := hdr.Get("X-Real-Ip")
-	hdrForwardedFor := hdr.Get("X-Forwarded-For")
-	if hdrRealIP == "" && hdrForwardedFor == "" {
-		return ipAddrFromRemoteAddr(r.RemoteAddr)
-	}
-	if hdrForwardedFor != "" {
-		parts := strings.Split(hdrForwardedFor, ",")
-		for i, p := range parts {
-			parts[i] = strings.TrimSpace(p)
-		}
-		return parts[0]
-	}
-	return hdrRealIP
-}
-func ipAddrFromRemoteAddr(s string) string {
-	idx := strings.LastIndex(s, ":")
-	if idx == -1 {
-		return s
-	}
-	return s[:idx]
+func generateCorrelationID() string {
+	// generate a unique identifier using the current time
+	return time.Now().Format("20060102-150405.999999")
 }

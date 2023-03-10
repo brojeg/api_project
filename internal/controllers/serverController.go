@@ -37,7 +37,7 @@ func NewRouter() *mux.Router {
 	router.HandleFunc("/api/user/withdrawals", GetBalancHistory).Methods("GET")
 	router.Use(server.LimitMiddleware)
 	router.Use(JwtAuthenticationMiddleware)
-	router.Use(server.HTTPLoggerMiddleware)
+	router.Use(server.LoggingMiddleware)
 
 	return router
 

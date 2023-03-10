@@ -30,7 +30,6 @@ func TestNewIPRateLimiter(t *testing.T) {
 }
 
 func TestIPRateLimiter_AddIP(t *testing.T) {
-	// Test case 1: Verify that the addIP() method returns a non-nil value.
 	i := &IPRateLimiter{
 		ips: make(map[string]*rate.Limiter),
 		mu:  &sync.RWMutex{},
@@ -42,13 +41,11 @@ func TestIPRateLimiter_AddIP(t *testing.T) {
 		t.Errorf("Test case 1: expected addIP() method to return a non-nil limiter, but got nil")
 	}
 
-	// Test case 2: Verify that the ips map contains the test IP address as a key.
 	_, ok := i.ips["127.0.0.1"]
 	if !ok {
 		t.Errorf("Test case 2: expected ips map to contain key %q, but it did not", "127.0.0.1")
 	}
 
-	// Test case 3: Verify that the value associated with the test IP address key in the ips map is a non-nil rate.Limiter instance.
 	limiter, ok = i.ips["127.0.0.1"]
 	if !ok {
 		t.Fatalf("Test case 3: expected ips map to contain key %q, but it did not", "127.0.0.1")
@@ -60,7 +57,6 @@ func TestIPRateLimiter_AddIP(t *testing.T) {
 }
 
 func TestIPRateLimiter_GetLimiter(t *testing.T) {
-	// Test case 1: Verify that the getLimiter() method returns a non-nil value.
 	i := &IPRateLimiter{
 		ips: make(map[string]*rate.Limiter),
 		mu:  &sync.RWMutex{},
@@ -72,13 +68,11 @@ func TestIPRateLimiter_GetLimiter(t *testing.T) {
 		t.Errorf("Test case 1: expected getLimiter() method to return a non-nil limiter, but got nil")
 	}
 
-	// Test case 2: Verify that the ips map contains the test IP address as a key.
 	_, ok := i.ips["127.0.0.1"]
 	if !ok {
 		t.Errorf("Test case 2: expected ips map to contain key %q, but it did not", "127.0.0.1")
 	}
 
-	// Test case 3: Verify that the value associated with the test IP address key in the ips map is a non-nil rate.Limiter instance.
 	limiter, ok = i.ips["127.0.0.1"]
 	if !ok {
 		t.Fatalf("Test case 3: expected ips map to contain key %q, but it did not", "127.0.0.1")
@@ -87,7 +81,6 @@ func TestIPRateLimiter_GetLimiter(t *testing.T) {
 		t.Errorf("Test case 3: expected value associated with key %q to be non-nil, but got nil", "127.0.0.1")
 	}
 
-	// Test case 4: Verify that the r rate and b burst size of the returned rate.Limiter instance match the values set in the IPRateLimiter instance.
 	if limiter.Limit() != i.r {
 		t.Errorf("Test case 4: expected rate.Limiter limit to be %v, but got %v", i.r, limiter.Limit())
 	}
