@@ -62,8 +62,6 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 
 func createLogFile() (*os.File, error) {
 	currentDate := time.Now().Format("2006-01-02")
-	mydir, _ := os.Getwd()
-	fmt.Println(mydir)
 	// create the log file with the current date as the file name
 	logFile, err := os.OpenFile(path+"server-"+currentDate+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
 	if err != nil {

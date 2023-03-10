@@ -24,3 +24,6 @@ vendor/
 
 # Logs
 .log
+
+# Env
+.env

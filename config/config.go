@@ -9,7 +9,6 @@ import (
 	order "diploma/go-musthave-diploma-tpl/internal/models/order"
 	server "diploma/go-musthave-diploma-tpl/internal/models/server"
 	"flag"
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -34,7 +33,7 @@ func Init() ServerConfig {
 
 	var envCfg ServerConfig
 	err := env.Parse(&envCfg)
-	fmt.Println(envCfg.ServerLog)
+
 	_, envAdddressExists := os.LookupEnv("RUN_ADDRESS")
 	_, envDBExists := os.LookupEnv("DATABASE_URI")
 	_, envAccrualExists := os.LookupEnv("ACCRUAL_SYSTEM_ADDRESS")
@@ -103,6 +102,5 @@ func Init() ServerConfig {
 	balance.CreateTable()
 	balanceHistory.CreateTable()
 
-	fmt.Println(envCfg.ServerLog)
 	return envCfg
 }
