@@ -136,6 +136,20 @@ func (suite *APISuite) TestLoginAccount() {
 			password:       randString(16),
 			expectedResult: 401,
 		},
+		{
+			name:           "// Test case 4: Verify that the /api/user/login endpoint returns the expected 400 code for the missing Login fieled",
+			password:       randString(16),
+			expectedResult: 400,
+		},
+		{
+			name:           "// Test case 4: Verify that the /api/user/login endpoint returns the expected 400 code for the missing Password fieled",
+			login:          testLogin,
+			expectedResult: 400,
+		},
+		{
+			name:           "// Test case 4: Verify that the /api/user/login endpoint returns the expected 400 code for empty request",
+			expectedResult: 400,
+		},
 	}
 
 	for _, tc := range testCases {
