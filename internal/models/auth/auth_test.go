@@ -41,7 +41,7 @@ func TestGetToken(t *testing.T) {
 	InitJWTPassword(jwtPassword, expTime)
 
 	// Test case 1: Verify that GetToken() function returns a non-empty token string and can be parsed.
-	tokenString := GetToken(testID)
+	tokenString := GenerateToken(testID)
 	if tokenString == "" {
 		t.Errorf("Test case 1: expected GetToken() to return a non-empty token string, but got an empty string")
 	}

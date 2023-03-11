@@ -71,5 +71,18 @@ func Login(email, password string) server.Response {
 
 func (account *Account) getToken() string {
 
-	return auth.GetToken(account.ID)
+	return auth.GenerateToken(account.ID)
+}
+
+func RefreshToken(user_id uint) server.Response {
+	user := &Account{ID: user_id}
+	err := db.Get().Table("accounts").Where("ID = ?", user_id).First(user).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return server.Message("Email address not found", 401)
+		}
+		return server.Message("Connection error. Please retry", 500)
+	}
+
+	return server.Response{ServerCode: 200, Message: user.getToken()}
 }

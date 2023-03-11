@@ -30,6 +30,7 @@ func NewRouter() *mux.Router {
 
 	router.HandleFunc("/api/user/register", CreateAccountWithBalance).Methods("POST")
 	router.HandleFunc("/api/user/login", Authenticate).Methods("POST")
+	router.HandleFunc("/api/user/refresh", Refresh).Methods("POST")
 	router.HandleFunc("/api/user/orders", CreateOrder).Methods("POST")
 	router.HandleFunc("/api/user/orders", GetOrders).Methods("GET")
 	router.HandleFunc("/api/user/balance", GetBalance).Methods("GET")

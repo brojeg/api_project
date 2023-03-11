@@ -1,0 +1,5 @@
+2023/03/11 08:28:17 127.0.0.1:52250 POST /api/user/login [CorrelationID: 20230311-082817.374538]
+2023/03/11 08:28:17 127.0.0.1:52250 POST /api/user/login 500 [CorrelationID: 20230311-082817.374538]
+2023/03/11 08:28:17 Response body: "Connection error. Please retry"
+2023/03/11 08:29:20 127.0.0.1:49231 POST /api/user/login [CorrelationID: 20230311-082920.050436]
+2023/03/11 08:30:45 127.0.0.1:53433 POST /api/user/login [CorrelationID: 20230311-083045.620882]

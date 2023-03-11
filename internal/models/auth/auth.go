@@ -40,7 +40,7 @@ func GetUserFromContext(ctx context.Context) (uint, bool) {
 	return caller, ok
 }
 
-func GetToken(id uint) string {
+func GenerateToken(id uint) string {
 	expirationTime := time.Now().Add(time.Duration(settings.expirationTime) * time.Minute)
 	tk := &Token{UserID: id, StandardClaims: jwt.StandardClaims{ExpiresAt: expirationTime.Unix()}}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
