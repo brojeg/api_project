@@ -74,9 +74,9 @@ func (account *Account) getToken() string {
 	return auth.GenerateToken(account.ID)
 }
 
-func RefreshToken(user_id uint) server.Response {
-	user := &Account{ID: user_id}
-	err := db.Get().Table("accounts").Where("ID = ?", user_id).First(user).Error
+func RefreshToken(userID uint) server.Response {
+	user := &Account{ID: userID}
+	err := db.Get().Table("accounts").Where("ID = ?", userID).First(user).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return server.Message("Email address not found", 401)
