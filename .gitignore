@@ -23,7 +23,7 @@ vendor/
 .vscode
 
 # Logs
-.log
+**/*.log
 
 # Env
 .env
