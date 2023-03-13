@@ -4,15 +4,17 @@ import (
 	"bytes"
 	"math/rand"
 
+	"diploma/go-musthave-diploma-tpl/config"
 	"diploma/go-musthave-diploma-tpl/internal/controllers"
+	account "diploma/go-musthave-diploma-tpl/internal/models/account"
+	auth "diploma/go-musthave-diploma-tpl/internal/models/auth"
+	db "diploma/go-musthave-diploma-tpl/internal/models/database"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"time"
 
-	account "diploma/go-musthave-diploma-tpl/internal/models/account"
-	db "diploma/go-musthave-diploma-tpl/internal/models/database"
-
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -171,6 +173,9 @@ func randString(length int) string {
 func DeleteAccount(login string) {
 
 	db.Get().Where("login = ?", login).Delete(&account.Account{})
+
+	userID := GetUserIDFromToken(TestData.Token)
+	DeletBalance(userID)
 }
 
 func Login(login, password string, router *mux.Router) (int, string) {
@@ -189,4 +194,15 @@ func Login(login, password string, router *mux.Router) (int, string) {
 	accessToken := rr.Header().Get("Authorization")
 
 	return rr.Code, accessToken
+}
+
+func GetUserIDFromToken(token string) uint {
+	tk := &auth.Token{StandardClaims: jwt.StandardClaims{ExpiresAt: int64(config.Param.ExpirationTime)}}
+	_, err := jwt.ParseWithClaims(token, tk, func(token *jwt.Token) (interface{}, error) {
+		return []byte(config.Param.JWTPassword), nil
+	})
+	if err != nil {
+		panic(err)
+	}
+	return tk.UserID
 }

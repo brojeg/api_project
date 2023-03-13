@@ -5,6 +5,7 @@ import (
 	balance "diploma/go-musthave-diploma-tpl/internal/models/balance"
 	balanceHistory "diploma/go-musthave-diploma-tpl/internal/models/balanceHistory"
 	server "diploma/go-musthave-diploma-tpl/internal/models/server"
+	math "diploma/go-musthave-diploma-tpl/pkg/math"
 
 	"encoding/json"
 	"net/http"
@@ -20,6 +21,10 @@ var WithdrawFromBalance = func(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(withdraw)
 	if err != nil {
 		server.Respond(w, server.Message("Error while decoding request body", 500))
+	}
+
+	if !math.IsLuhnValid(withdraw.Order) {
+		server.Respond(w, server.Message("Bad order number format", 422))
 	}
 	currentBalance := balance.Get(user)
 	resp := currentBalance.Withdraw(withdraw.Sum)

@@ -27,6 +27,8 @@ type ServerConfig struct {
 	ServerLog      string `env:"SERVER_LOG"`
 }
 
+var Param ServerConfig
+
 func Init() ServerConfig {
 
 	godotenv.Load(".env")
@@ -101,6 +103,6 @@ func Init() ServerConfig {
 	account.CreateTable()
 	balance.CreateTable()
 	balanceHistory.CreateTable()
-
+	Param = envCfg
 	return envCfg
 }
