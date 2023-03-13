@@ -30,17 +30,12 @@ func (suite *OrderTest) SetupTest() {
 
 }
 
-func (suite *OrderTest) TearDownSuite() {
-	// stringOrederID := strconv.Itoa(TestData.OrderID)
-	// DeleteOrder(stringOrederID)
-}
-
 func (suite *OrderTest) TestCreateOrder() {
 	type testCase struct {
 		name             string
 		token            string
 		orderID          int
-		wrongOrderIdType string
+		wrongOrderIDType string
 		expectedResult   int
 	}
 
@@ -66,7 +61,7 @@ func (suite *OrderTest) TestCreateOrder() {
 		{
 			name:             "// Test case 4: Verify that the /api/user/orders endpoint returns the expected 422 code for the wrong nubmer format",
 			token:            TestData.Token,
-			wrongOrderIdType: "test",
+			wrongOrderIDType: "test",
 			expectedResult:   422,
 		},
 		{
@@ -76,7 +71,7 @@ func (suite *OrderTest) TestCreateOrder() {
 	}
 
 	for _, tc := range testCases {
-		resposeCode := CreateOrder(tc.token, tc.wrongOrderIdType, tc.orderID, suite.router)
+		resposeCode := CreateOrder(tc.token, tc.wrongOrderIDType, tc.orderID, suite.router)
 		assert.Equal(suite.T(), tc.expectedResult, resposeCode, fmt.Sprintf("%v, want %v, got %v", tc.name, tc.expectedResult, resposeCode))
 
 	}
