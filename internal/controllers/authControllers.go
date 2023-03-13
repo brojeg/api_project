@@ -40,13 +40,3 @@ var JwtAuthenticationMiddleware = func(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
-
-var Refresh = func(w http.ResponseWriter, r *http.Request) {
-	user, ok := auth.GetUserFromContext(r.Context())
-	if !ok {
-		server.Respond(w, server.Message("Could not get user from context", 500))
-	}
-	resp := account.RefreshToken(user)
-	w.Header().Add("Authorization", resp.Message.(string))
-	server.Respond(w, resp)
-}
