@@ -38,7 +38,7 @@ func NewRouter() *chi.Mux {
 		r.Get("/api/user/orders", GetOrders)
 		r.Get("/api/user/balance", GetBalance)
 		r.Post("/api/user/balance/withdraw", WithdrawFromBalance)
-		r.Get("/api/user/balance/withdraw", GetBalancHistory)
+		r.Get("/api/user/withdrawals", GetBalancHistory)
 	})
 	return router
 }
