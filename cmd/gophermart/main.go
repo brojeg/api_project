@@ -10,7 +10,7 @@ func main() {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	config.Init()
+	config.InitStartupParameters()
 	config.InitLocalVars()
 	config.CreateDBTables()
 	go controllers.ApplyAccruals(ctx, config.Param.Interval, config.Param.Accrual)

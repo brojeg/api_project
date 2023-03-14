@@ -41,7 +41,7 @@ type ServerLog struct {
 
 var Param ServerConfig
 
-func Init() {
+func InitStartupParameters() {
 
 	godotenv.Load(".env")
 	err := env.Parse(&Param)

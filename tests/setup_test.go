@@ -8,7 +8,7 @@ import (
 )
 
 func TestAPISuite(t *testing.T) {
-	config.Init()
+	config.InitStartupParameters()
 	config.InitLocalVars()
 	config.CreateDBTables()
 	initTestData()
