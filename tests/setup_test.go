@@ -9,6 +9,8 @@ import (
 
 func TestAPISuite(t *testing.T) {
 	config.Init()
+	config.InitLocalVars()
+	config.CreateDBTables()
 	initTestData()
 	suite.Run(t, new(AccountTest))
 	suite.Run(t, new(OrderTest))

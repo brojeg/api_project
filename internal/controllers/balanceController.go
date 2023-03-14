@@ -9,48 +9,50 @@ import (
 
 	"encoding/json"
 	"net/http"
-	"time"
 )
 
 var WithdrawFromBalance = func(w http.ResponseWriter, r *http.Request) {
 	user, ok := auth.GetUserFromContext(r.Context())
 	if !ok {
-		server.Respond(w, server.Message("Could not get user from context", 500))
+		server.RespondWithMessage(w, 500, "Could not get user from context")
 	}
-	withdraw := &balanceHistory.BalanceHistory{ProcessedAt: time.Now(), UserID: user}
+
+	withdraw := balanceHistory.NewBalance(user)
 	err := json.NewDecoder(r.Body).Decode(withdraw)
 	if err != nil {
-		server.Respond(w, server.Message("Error while decoding request body", 500))
+		// server.Respond(w, server.Message("Error while decoding request body", 500))
+		server.RespondWithMessage(w, 500, "Error while decoding request body")
 	}
 
 	if !math.IsLuhnValid(withdraw.Order) {
-		server.Respond(w, server.Message("Bad order number format", 422))
+		// server.Respond(w, server.Message("Bad order number format", 422))
+		server.RespondWithMessage(w, 422, "Bad order number format")
 	}
 	currentBalance := balance.Get(user)
 	resp := currentBalance.Withdraw(withdraw.Sum)
 	if resp.ServerCode == 200 {
 		withdraw.Save()
 	}
-	server.Respond(w, resp)
+	server.RespondWithMessage(w, resp.ServerCode, resp.Message)
 
 }
 
 var GetBalancHistory = func(w http.ResponseWriter, r *http.Request) {
 	user, ok := auth.GetUserFromContext(r.Context())
 	if !ok {
-		server.Respond(w, server.Message("Could not get user from context", 500))
+		server.RespondWithMessage(w, 500, "Could not get user from context")
 	}
 	data := balanceHistory.GetBalanceHistory(user)
 	resp := server.Response{Message: data, ServerCode: 200}
-	server.Respond(w, resp)
+	server.RespondWithMessage(w, resp.ServerCode, resp.Message)
 }
 
 var GetBalance = func(w http.ResponseWriter, r *http.Request) {
 	user, ok := auth.GetUserFromContext(r.Context())
 	if !ok {
-		server.Respond(w, server.Message("Could not get user from context", 500))
+		server.RespondWithMessage(w, 500, "Could not get user from context")
 	}
 	data := balance.Get(user)
 	resp := server.Response{Message: data, ServerCode: 200}
-	server.Respond(w, resp)
+	server.RespondWithMessage(w, resp.ServerCode, resp.Message)
 }

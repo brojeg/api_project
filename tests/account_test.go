@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"math/rand"
 
 	"diploma/go-musthave-diploma-tpl/config"
@@ -15,14 +16,14 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
 type AccountTest struct {
 	suite.Suite
-	router *mux.Router
+	router *chi.Mux
 }
 type CreateUserRequest struct {
 	Login    string `json:"login"`
@@ -63,27 +64,27 @@ func (suite *AccountTest) TestCreateAccount() {
 			expectedResult: 409,
 		},
 		{
-			name:           "// Test case 2: Verify that the /api/user/register endpoint returns the expected 400 code for the account with missing Login field.",
+			name:           "// Test case 3: Verify that the /api/user/register endpoint returns the expected 400 code for the account with missing Login field.",
 			password:       TestData.Password,
 			expectedResult: 400,
 		},
 		{
-			name:           "// Test case 3: Verify that the /api/user/register endpoint returns the expected 400 code for the account with missing Password field.",
+			name:           "// Test case 4: Verify that the /api/user/register endpoint returns the expected 400 code for the account with missing Password field.",
 			login:          TestData.Login,
 			expectedResult: 400,
 		},
 		{
-			name:           "// Test case 4: Verify that the /api/user/register endpoint returns the expected 400 code for the empty request.",
+			name:           "// Test case 5: Verify that the /api/user/register endpoint returns the expected 400 code for the empty request.",
 			expectedResult: 400,
 		},
 		{
-			name:           "// Test case 5: Verify that the /api/user/register endpoint returns the expected 400 code for the short Login field.",
+			name:           "// Test case 6: Verify that the /api/user/register endpoint returns the expected 400 code for the short Login field.",
 			login:          "l",
 			password:       TestData.Password,
 			expectedResult: 400,
 		},
 		{
-			name:           "// Test case 6: Verify that the /api/user/register endpoint returns the expected 400 code for the short Password field.",
+			name:           "// Test case 7: Verify that the /api/user/register endpoint returns the expected 400 code for the short Password field.",
 			login:          TestData.Login,
 			password:       "p",
 			expectedResult: 400,
@@ -103,7 +104,7 @@ func (suite *AccountTest) TestCreateAccount() {
 		}
 		rr := httptest.NewRecorder()
 		suite.router.ServeHTTP(rr, req)
-		assert.Equal(suite.T(), tc.expectedResult, rr.Code)
+		assert.Equal(suite.T(), tc.expectedResult, rr.Code, fmt.Sprintf("%v, want %v, got %v", tc.name, tc.expectedResult, rr.Code))
 
 	}
 }
@@ -125,19 +126,19 @@ func (suite *AccountTest) TestLoginAccount() {
 		},
 		{
 			name:           "// Test case 2: Verify that the /api/user/login endpoint returns the expected 401 code for the non-existing user.",
-			login:          randString(4),
+			login:          randString(5),
 			password:       TestData.Password,
 			expectedResult: 401,
 		},
 		{
 			name:           "// Test case 3: Verify that the /api/user/login endpoint returns the expected 401 code for the existing user but wrong password",
 			login:          TestData.Login,
-			password:       randString(16),
+			password:       randString(17),
 			expectedResult: 401,
 		},
 		{
 			name:           "// Test case 4: Verify that the /api/user/login endpoint returns the expected 400 code for the missing Login fieled",
-			password:       randString(16),
+			password:       randString(17),
 			expectedResult: 400,
 		},
 		{
@@ -153,7 +154,7 @@ func (suite *AccountTest) TestLoginAccount() {
 
 	for _, tc := range testCases {
 		resposeCode, _ := Login(tc.login, tc.password, suite.router)
-		assert.Equal(suite.T(), tc.expectedResult, resposeCode)
+		assert.Equal(suite.T(), tc.expectedResult, resposeCode, fmt.Sprintf("%v, want %v, got %v", tc.name, tc.expectedResult, resposeCode))
 
 	}
 }
@@ -178,7 +179,7 @@ func DeleteAccount(login string) {
 	DeletBalance(userID)
 }
 
-func Login(login, password string, router *mux.Router) (int, string) {
+func Login(login, password string, router *chi.Mux) (int, string) {
 	requestBody := &CreateUserRequest{
 		Login:    login,
 		Password: password,

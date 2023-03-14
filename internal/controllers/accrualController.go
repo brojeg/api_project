@@ -22,8 +22,7 @@ func ApplyAccruals(ctx context.Context, interval, accrualURL string) {
 				order.ApplyAccrual()
 			}
 		case <-ctx.Done():
-			return
-
+			logger.Warn("Closing ApplyAccruals goroutine")
 		}
 	}
 

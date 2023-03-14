@@ -37,3 +37,8 @@ func GetBalanceHistory(user uint) []*BalanceHistory {
 
 	return history
 }
+
+func NewBalance(userID uint) *BalanceHistory {
+	withdraw := &BalanceHistory{ProcessedAt: time.Now(), UserID: userID}
+	return withdraw
+}

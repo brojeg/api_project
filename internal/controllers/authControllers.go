@@ -13,25 +13,19 @@ var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 	acc := &account.Account{}
 	err := json.NewDecoder(r.Body).Decode(acc)
 	if err != nil || acc.Login == "" || acc.Password == "" {
-		server.Respond(w, server.Message("Invalid request", 400))
+		// server.Respond(w, server.Message("Invalid request", 400))
+		server.RespondWithMessage(w, 400, "Invalid request")
 	}
 	resp := account.Login(acc.Login, acc.Password)
 	w.Header().Add("Authorization", resp.Message.(string))
-	server.Respond(w, resp)
+	// server.Respond(w, resp)
+	server.RespondWithMessage(w, resp.ServerCode, resp.Message)
 }
 var JwtAuthenticationMiddleware = func(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		notAuth := []string{"/api/user/register", "/api/user/login"}
-		requestPath := r.URL.Path
-		for _, value := range notAuth {
-			if value == requestPath {
-				next.ServeHTTP(w, r)
-				return
-			}
-		}
 		resp := auth.ValidateToken(r)
 		if resp.ServerCode != 200 {
-			server.Respond(w, resp)
+			server.RespondWithMessage(w, resp.ServerCode, resp.Message)
 			return
 		}
 

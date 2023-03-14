@@ -10,8 +10,10 @@ func main() {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	config := config.Init()
-	go controllers.ApplyAccruals(ctx, config.Interval, config.Accrual)
-	controllers.NewHTTPServer(config.ServerPort)
+	config.Init()
+	config.InitLocalVars()
+	config.CreateDBTables()
+	go controllers.ApplyAccruals(ctx, config.Param.Interval, config.Param.Accrual)
+	controllers.NewHTTPServer(config.Param.ServerPort)
 
 }

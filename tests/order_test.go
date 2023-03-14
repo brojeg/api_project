@@ -10,14 +10,14 @@ import (
 	"net/http/httptest"
 	"strconv"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
 type OrderTest struct {
 	suite.Suite
-	router *mux.Router
+	router *chi.Mux
 }
 
 func (suite *OrderTest) SetupTest() {
@@ -118,7 +118,7 @@ func (suite *OrderTest) TestGetOrder() {
 
 }
 
-func CreateOrder(token, badOrderid string, orderID int, router *mux.Router) int {
+func CreateOrder(token, badOrderid string, orderID int, router *chi.Mux) int {
 	requestBody := strconv.Itoa(orderID)
 	if requestBody == "0" && badOrderid != "" {
 		requestBody = badOrderid
@@ -134,7 +134,7 @@ func CreateOrder(token, badOrderid string, orderID int, router *mux.Router) int 
 	return rr.Code
 }
 
-func GetOrder(token string, router *mux.Router) int {
+func GetOrder(token string, router *chi.Mux) int {
 
 	req, err := http.NewRequest("GET", "/api/user/orders", nil)
 	req.Header.Add("Authorization", token)

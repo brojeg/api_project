@@ -6,9 +6,9 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"go.uber.org/zap"
-
-	"github.com/gorilla/mux"
 )
 
 var logger *zap.SugaredLogger = log.Init()
@@ -25,20 +25,20 @@ func NewHTTPServer(port string) {
 
 }
 
-func NewRouter() *mux.Router {
-	router := mux.NewRouter()
-
-	router.HandleFunc("/api/user/register", CreateAccountWithBalance).Methods("POST")
-	router.HandleFunc("/api/user/login", Authenticate).Methods("POST")
-	router.HandleFunc("/api/user/orders", CreateOrder).Methods("POST")
-	router.HandleFunc("/api/user/orders", GetOrders).Methods("GET")
-	router.HandleFunc("/api/user/balance", GetBalance).Methods("GET")
-	router.HandleFunc("/api/user/balance/withdraw", WithdrawFromBalance).Methods("POST")
-	router.HandleFunc("/api/user/withdrawals", GetBalancHistory).Methods("GET")
+func NewRouter() *chi.Mux {
+	router := chi.NewRouter()
+	router.Use(middleware.Recoverer)
 	router.Use(server.LimitMiddleware)
-	router.Use(JwtAuthenticationMiddleware)
 	router.Use(server.LoggingMiddleware)
-
+	router.Post("/api/user/register", CreateAccountWithBalance)
+	router.Post("/api/user/login", Authenticate)
+	router.Group(func(r chi.Router) {
+		r.Use(JwtAuthenticationMiddleware)
+		r.Post("/api/user/orders", CreateOrder)
+		r.Get("/api/user/orders", GetOrders)
+		r.Get("/api/user/balance", GetBalance)
+		r.Post("/api/user/balance/withdraw", WithdrawFromBalance)
+		r.Get("/api/user/balance/withdraw", GetBalancHistory)
+	})
 	return router
-
 }

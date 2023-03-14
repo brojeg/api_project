@@ -11,14 +11,14 @@ import (
 	"net/http/httptest"
 	"strconv"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
 type BalanceTest struct {
 	suite.Suite
-	router *mux.Router
+	router *chi.Mux
 }
 
 func (suite *BalanceTest) SetupTest() {
@@ -102,7 +102,7 @@ func (suite *BalanceTest) TestWithdraw() {
 	}
 }
 
-func GetBalance(token string, router *mux.Router) int {
+func GetBalance(token string, router *chi.Mux) int {
 
 	req, err := http.NewRequest("GET", "/api/user/balance", nil)
 	req.Header.Add("Authorization", token)
@@ -115,7 +115,7 @@ func GetBalance(token string, router *mux.Router) int {
 	return rr.Code
 }
 
-func WithdrawFromBalance(token string, orderID, sum int, router *mux.Router) int {
+func WithdrawFromBalance(token string, orderID, sum int, router *chi.Mux) int {
 	type WithdrawRequest struct {
 		Order string `json:"order"`
 		Sum   int    `json:"sum"`

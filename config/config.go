@@ -18,23 +18,33 @@ import (
 )
 
 type ServerConfig struct {
-	ServerPort     string `env:"RUN_ADDRESS" envDefault:"127.0.0.1:8080"`
-	Interval       string `env:"INTERVAL" envDefault:"5s"`
-	Database       string `env:"DATABASE_URI"`
-	Accrual        string `env:"ACCRUAL_SYSTEM_ADDRESS" envDefault:"127.0.0.1:8081"`
+	HTTPServer
+	ExternalDependency
+	ServerAuth
+	ServerLog
+}
+type HTTPServer struct {
+	ServerPort string `env:"RUN_ADDRESS" envDefault:"127.0.0.1:8080"`
+	Interval   string `env:"INTERVAL" envDefault:"5s"`
+}
+type ExternalDependency struct {
+	Database string `env:"DATABASE_URI"`
+	Accrual  string `env:"ACCRUAL_SYSTEM_ADDRESS" envDefault:"127.0.0.1:8081"`
+}
+type ServerAuth struct {
 	JWTPassword    string `env:"JWT_PASSWORD"`
 	ExpirationTime int    `env:"EXPIRATION_TIME" envDefault:"15"`
-	ServerLog      string `env:"SERVER_LOG"`
+}
+type ServerLog struct {
+	Log string `env:"SERVER_LOG"`
 }
 
 var Param ServerConfig
 
-func Init() ServerConfig {
+func Init() {
 
 	godotenv.Load(".env")
-
-	var envCfg ServerConfig
-	err := env.Parse(&envCfg)
+	err := env.Parse(&Param)
 
 	_, envAdddressExists := os.LookupEnv("RUN_ADDRESS")
 	_, envDBExists := os.LookupEnv("DATABASE_URI")
@@ -50,14 +60,14 @@ func Init() ServerConfig {
 		if envAdddressExists {
 			return nil
 		}
-		envCfg.ServerPort = flagValue
+		Param.ServerPort = flagValue
 		return nil
 	})
 	flag.Func("d", "Postgres connection string (No default value)", func(flagValue string) error {
 		if envDBExists {
 			return nil
 		}
-		envCfg.Database = flagValue
+		Param.Database = flagValue
 
 		return nil
 	})
@@ -65,21 +75,21 @@ func Init() ServerConfig {
 		if envAccrualExists {
 			return nil
 		}
-		envCfg.Accrual = flagValue
+		Param.Accrual = flagValue
 		return nil
 	})
 	flag.Func("i", "Interval for the accrual system check (default 5s)", func(flagValue string) error {
 		if envIntervalExists {
 			return nil
 		}
-		envCfg.Interval = flagValue
+		Param.Interval = flagValue
 		return nil
 	})
 	flag.Func("p", "Interval for the accrual system check (default 5s)", func(flagValue string) error {
 		if envJWTPAsswordExists {
 			return nil
 		}
-		envCfg.JWTPassword = flagValue
+		Param.JWTPassword = flagValue
 		return nil
 	})
 	flag.Func("t", "TTL for JWT token (default 15m", func(flagValue string) error {
@@ -90,19 +100,22 @@ func Init() ServerConfig {
 		if err != nil {
 			return err
 		}
-		envCfg.ExpirationTime = intVar
+		Param.ExpirationTime = intVar
 		return nil
 	})
 	flag.Parse()
+}
 
-	db.InitDBConnectionString(envCfg.Database)
-	order.InitAccrualURL(envCfg.Accrual)
-	auth.InitJWTPassword(envCfg.JWTPassword, envCfg.ExpirationTime)
-	server.SetServerLogPath(envCfg.ServerLog)
+func InitLocalVars() {
+	db.InitDBConnectionString(Param.Database)
+	order.InitAccrualURL(Param.Accrual)
+	auth.InitJWTPassword(Param.JWTPassword, Param.ExpirationTime)
+	server.SetServerLogPath(Param.Log)
+}
+
+func CreateDBTables() {
 	order.CreateTable()
 	account.CreateTable()
 	balance.CreateTable()
 	balanceHistory.CreateTable()
-	Param = envCfg
-	return envCfg
 }
