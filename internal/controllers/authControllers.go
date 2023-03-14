@@ -13,12 +13,10 @@ var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 	acc := &account.Account{}
 	err := json.NewDecoder(r.Body).Decode(acc)
 	if err != nil || acc.Login == "" || acc.Password == "" {
-		// server.Respond(w, server.Message("Invalid request", 400))
 		server.RespondWithMessage(w, 400, "Invalid request")
 	}
 	resp := account.Login(acc.Login, acc.Password)
 	w.Header().Add("Authorization", resp.Message.(string))
-	// server.Respond(w, resp)
 	server.RespondWithMessage(w, resp.ServerCode, resp.Message)
 }
 var JwtAuthenticationMiddleware = func(next http.Handler) http.Handler {

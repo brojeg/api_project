@@ -20,12 +20,10 @@ var WithdrawFromBalance = func(w http.ResponseWriter, r *http.Request) {
 	withdraw := balanceHistory.NewBalance(user)
 	err := json.NewDecoder(r.Body).Decode(withdraw)
 	if err != nil {
-		// server.Respond(w, server.Message("Error while decoding request body", 500))
 		server.RespondWithMessage(w, 500, "Error while decoding request body")
 	}
 
 	if !math.IsLuhnValid(withdraw.Order) {
-		// server.Respond(w, server.Message("Bad order number format", 422))
 		server.RespondWithMessage(w, 422, "Bad order number format")
 	}
 	currentBalance := balance.Get(user)
