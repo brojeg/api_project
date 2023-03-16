@@ -11,6 +11,7 @@ func ApplyAccruals(ctx context.Context, interval, accrualURL string) {
 	inter, err := time.ParseDuration(interval)
 	if err != nil {
 		logger.Errorf("Cannot parse interval value from config. Error is: \n %e", err)
+		return
 	}
 	ticker := time.NewTicker(inter)
 	for {
